@@ -2,9 +2,12 @@
 .github
 .next
 node_modules
-out
-build
-dist
+# Exclude only top-level build/output directories from npm and Next.
+# Using a leading slash matches only the repo root — otherwise `build`
+# would also match nested dirs like lib/build/ (silent break).
+/out
+/build
+/dist
 .env
 .env.local
 .env.*.local

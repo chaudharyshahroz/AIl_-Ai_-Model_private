@@ -3,7 +3,7 @@ import { resolveProvider } from "@/lib/ai/registry";
 import { detectIntent, selectModel, type UserPreference } from "@/lib/ai/auto";
 import { getProviderEnvKey } from "@/lib/env";
 import { decrypt } from "@/lib/crypto";
-import { BUILD_SYSTEM_PROMPT, BUILD_REWRITE_SYSTEM_PROMPT } from "@/lib/build/parser";
+import { BUILD_SYSTEM_PROMPT, BUILD_REWRITE_SYSTEM_PROMPT } from "@/lib/build-parser/parser";
 import type { ModelDescriptor, UnifiedGenerationRequest, UnifiedMessage, ProviderCredential } from "@/lib/ai/types";
 
 /**
