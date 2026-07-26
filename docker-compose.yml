@@ -1,0 +1,77 @@
+version: "3.9"
+
+# ============================================================================
+# Reklu — Local + Dokploy docker-compose
+# ----------------------------------------------------------------------------
+# For Dokploy, set the env vars in the Dokploy UI (not here) so secrets
+# don't end up in git. For local dev, copy .env.example to .env first.
+# ============================================================================
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: reklu-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      HOSTNAME: "0.0.0.0"
+      PORT: "3000"
+      # Database
+      DATABASE_URL: ${DATABASE_URL:-postgresql://reklu:reklu@db:5432/reklu}
+      # Auth
+      AUTH_SECRET: ${AUTH_SECRET:?AUTH_SECRET is required}
+      AUTH_TRUST_HOST: "true"
+      # Encryption
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:?ENCRYPTION_KEY is required}
+      # Optional: Google OAuth
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      # Optional: AI provider keys (admin manages these via the dashboard too)
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      GOOGLE_AI_API_KEY: ${GOOGLE_AI_API_KEY:-}
+      # Public URL
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - reklu
+
+  db:
+    image: postgres:16-alpine
+    container_name: reklu-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-reklu}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-reklu}
+      POSTGRES_DB: ${POSTGRES_DB:-reklu}
+    volumes:
+      - reklu-db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-reklu}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - reklu
+
+networks:
+  reklu:
+    driver: bridge
+
+volumes:
+  reklu-db-data:
+    driver: local
