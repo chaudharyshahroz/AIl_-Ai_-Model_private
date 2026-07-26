@@ -84,12 +84,16 @@ function parseServerEnv(): ServerEnv {
   if (cachedServerEnv) return cachedServerEnv;
   const parsed = serverSchema.safeParse(process.env);
   if (!parsed.success) {
-    // Print readable errors but don't crash if the missing field is optional in dev.
+    // Print readable warnings but don't crash.
+    // The env vars are validated AGAIN lazily at every access via `env.X`
+    // throwing a clear error if the value is missing. This way:
+    //   - `next build` succeeds even if the runtime secrets aren't set
+    //   - At runtime, the first request that needs a missing var fails clearly
     const issues = parsed.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("\n  ");
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === "production" && process.env.NEXT_PHASE !== "phase-production-build") {
       throw new Error(`Invalid environment variables:\n  ${issues}`);
     }
-    console.warn(`[env] Some env vars are missing (dev mode, continuing):\n  ${issues}`);
+    console.warn(`[env] Some env vars are missing (continuing — they will be required at runtime):\n  ${issues}`);
   }
   cachedServerEnv = (parsed.success ? parsed.data : serverSchema.partial().parse(process.env)) as ServerEnv;
   return cachedServerEnv;
@@ -110,6 +114,22 @@ function parseClientEnv(): ClientEnv {
 }
 
 export const env = isServer ? parseServerEnv() : ({} as ServerEnv);
+
+/**
+ * Get a required env var, throwing a clear error if it's missing.
+ * Use this at the point of use (e.g. inside an API route) instead of
+ * relying on the cached `env` object.
+ */
+export function requireEnv<K extends keyof ServerEnv>(key: K): NonNullable<ServerEnv[K]> {
+  const value = process.env[key as string];
+  if (value === undefined || value === null || value === "") {
+    throw new Error(
+      `Required environment variable "${String(key)}" is not set. ` +
+        `Set it in .env (local) or in your deployment platform's environment tab.`,
+    );
+  }
+  return value as NonNullable<ServerEnv[K]>;
+}
 export const publicEnv = parseClientEnv();
 
 /**
