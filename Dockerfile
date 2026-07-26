@@ -42,6 +42,11 @@ WORKDIR /app
 
 RUN apk add --no-cache openssl curl
 
+# Install Prisma CLI globally so docker-entrypoint.sh can run `prisma db push`
+# without npx fetching the wrong version. Must match the prisma version used
+# in the builder (package.json) to avoid schema/client drift.
+RUN npm install -g prisma@5.22.0
+
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
