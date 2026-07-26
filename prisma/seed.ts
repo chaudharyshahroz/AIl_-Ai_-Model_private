@@ -202,6 +202,64 @@ async function main() {
     }
   }
 
+  console.log("→ Seeding OpenAI-compatible providers…");
+  for (const provider of OPENAI_COMPAT_PROVIDERS) {
+    await db.modelProvider.upsert({
+      where: { id: provider.id },
+      create: {
+        id: provider.id,
+        displayName: provider.displayName,
+        websiteUrl: provider.websiteUrl,
+        apiBaseUrl: provider.apiBaseUrl,
+        isEnabled: true,
+        syncStatus: "ok",
+        lastSyncedAt: new Date(),
+      },
+      update: {
+        displayName: provider.displayName,
+        apiBaseUrl: provider.apiBaseUrl,
+      },
+    });
+    for (const m of provider.models) {
+      await db.modelDefinition.upsert({
+        where: {
+          providerId_providerModelId: { providerId: provider.id, providerModelId: m.providerModelId },
+        },
+        create: {
+          providerId: provider.id,
+          providerModelId: m.providerModelId,
+          displayName: m.displayName,
+          family: m.family,
+          contextWindow: m.contextWindow,
+          maxOutputTokens: m.maxOutputTokens,
+          inputModalities: JSON.stringify(m.inputModalities ?? ["text"]),
+          outputModalities: JSON.stringify(["text"]),
+          supportsTools: m.supportsTools ?? false,
+          supportsVision: m.supportsVision ?? false,
+          supportsAudio: false,
+          supportsReasoning: m.supportsReasoning ?? false,
+          supportsStreaming: true,
+          supportsStructuredOutput: m.supportsTools ?? false,
+          supportsWebSearch: m.supportsWebSearch ?? false,
+          priceInputMicrosPer1M: m.priceInputMicrosPer1M,
+          priceOutputMicrosPer1M: m.priceOutputMicrosPer1M,
+          qualityScore: m.qualityScore ?? 50,
+          speedScore: m.speedScore ?? 50,
+          costScore: m.costScore ?? 50,
+          recommendedFor: JSON.stringify(m.recommendedFor ?? []),
+          status: "active",
+          isEnabledForUsers: true,
+        },
+        update: {
+          displayName: m.displayName,
+          priceInputMicrosPer1M: m.priceInputMicrosPer1M,
+          priceOutputMicrosPer1M: m.priceOutputMicrosPer1M,
+        },
+      });
+    }
+  }
+  console.log(`  ✓ Seeded ${OPENAI_COMPAT_PROVIDERS.length} OpenAI-compatible providers`);
+
   console.log("→ Seeding demo user…");
   const email = "demo@reklu.app";
   const password = "demopassword";
