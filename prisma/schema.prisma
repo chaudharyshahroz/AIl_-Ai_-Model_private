@@ -4,8 +4,10 @@
 // Phase 1-3 models. Phase 4+ (skills, MCP, connectors, artifacts, agents,
 // billing) are added in subsequent migration files; see docs/ARCHITECTURE.md.
 //
-// Database: SQLite for local dev, PostgreSQL for production.
-// Provider is parameterized via DATABASE_URL.
+// Database: PostgreSQL for both local dev and production.
+// The Prisma `provider` cannot be parameterized via DATABASE_URL — it must be
+// committed to one value. We use postgresql everywhere so the same schema
+// works in dev and in the Dokploy deployment.
 // ============================================================================
 
 generator client {
@@ -13,7 +15,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
