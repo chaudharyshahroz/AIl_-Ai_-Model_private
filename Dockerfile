@@ -50,7 +50,10 @@ RUN npm install -g prisma@5.22.0
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
+# NOTE: do NOT set HOSTNAME=0.0.0.0 — Next.js reads process.env.HOSTNAME when
+# generating redirect URLs (auth callbacks, OAuth, error pages), and using
+# 0.0.0.0 there causes a redirect loop behind a reverse proxy. The standalone
+# server already binds to 0.0.0.0 by default when no hostname is set.
 
 # Create non-root user
 RUN addgroup --system --gid 1001 nodejs && \
