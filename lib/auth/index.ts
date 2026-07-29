@@ -106,8 +106,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.preferredModelId = (u.preferredModelId ?? null) as string | null;
         token.preferredAuto = u.preferredAuto ?? true;
       }
-      // Refresh from DB periodically (on every request) to pick up changes
-      if (token.id && (trigger === "update" || !token.email)) {
+      // Refresh from DB on every request to pick up suspension/deletion and
+      // prevent stale JWTs from creating /sign-in <-> /app/chat loops.
+      if (token.id) {
         const fresh = await db.user.findUnique({
           where: { id: token.id as string },
           select: {
@@ -121,14 +122,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             deletedAt: true,
           },
         });
-        if (fresh && !fresh.isSuspended && !fresh.deletedAt) {
-          token.email = fresh.email as string;
-          token.name = (fresh.name ?? null) as string | null;
-          token.picture = (fresh.image ?? null) as string | null;
-          token.isAdmin = fresh.isAdmin;
-          token.preferredModelId = fresh.preferredModelId;
-          token.preferredAuto = fresh.preferredAuto;
+        if (!fresh || fresh.isSuspended || fresh.deletedAt) {
+          delete token.id;
+          delete token.email;
+          delete token.name;
+          delete token.picture;
+          delete token.isAdmin;
+          delete token.preferredModelId;
+          delete token.preferredAuto;
+          return token;
         }
+        token.email = fresh.email as string;
+        token.name = (fresh.name ?? null) as string | null;
+        token.picture = (fresh.image ?? null) as string | null;
+        token.isAdmin = fresh.isAdmin;
+        token.preferredModelId = fresh.preferredModelId;
+        token.preferredAuto = fresh.preferredAuto;
       }
       return token;
     },
