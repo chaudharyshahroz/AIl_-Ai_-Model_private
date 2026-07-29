@@ -37,7 +37,7 @@ export default async function SignUpPage({
   searchParams: Promise<{ error?: string }>;
 }) {
   const session = await auth();
-  if (session?.user) redirect("/app/chat");
+  if (session?.user?.id) redirect("/app/chat");
   const { error } = await searchParams;
 
   async function signUpAction(formData: FormData) {

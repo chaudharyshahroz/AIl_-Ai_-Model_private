@@ -57,7 +57,7 @@ const CREATORS = [
 
 export default async function Home() {
   const session = await auth();
-  if (session?.user) redirect("/app/chat");
+  if (session?.user?.id) redirect("/app/chat");
 
   return (
     <div className="min-h-screen bg-background">
