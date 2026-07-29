@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
-import { auth, signIn } from "@/lib/auth";
+import { signIn } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,8 +36,6 @@ export default async function SignUpPage({
 }: {
   searchParams: Promise<{ error?: string }>;
 }) {
-  const session = await auth();
-  if (session?.user?.id) redirect("/app/chat");
   const { error } = await searchParams;
 
   async function signUpAction(formData: FormData) {

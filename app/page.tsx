@@ -2,8 +2,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
 import {
   ArrowRight,
   Check,
@@ -56,9 +54,6 @@ const CREATORS = [
 ];
 
 export default async function Home() {
-  const session = await auth();
-  if (session?.user?.id) redirect("/app/chat");
-
   return (
     <div className="min-h-screen bg-background">
       <Header />

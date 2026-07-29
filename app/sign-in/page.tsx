@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { auth, signIn } from "@/lib/auth";
+import { signIn } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,8 +14,6 @@ export default async function SignInPage({
 }: {
   searchParams: Promise<{ callbackUrl?: string; error?: string }>;
 }) {
-  const session = await auth();
-  if (session?.user?.id) redirect("/app/chat");
   const { callbackUrl, error } = await searchParams;
 
   async function signInAction(formData: FormData) {
