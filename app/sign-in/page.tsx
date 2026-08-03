@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Check, Sparkles } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -29,24 +28,16 @@ export default async function SignInPage({
   }
 
   return (
-    <div className="grid min-h-screen lg:grid-cols-[0.92fr_1.08fr]">
-      <div className="flex flex-col justify-center px-5 py-10 sm:px-10">
-        <div className="mx-auto w-full max-w-md">
-          <Link href="/" className="mb-10 flex w-fit items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-            <span className="grid size-8 place-items-center rounded-full bg-foreground text-xs font-black text-background">R</span>
-            Back to Reklu
+    <div className="grid min-h-screen lg:grid-cols-2">
+      <div className="flex flex-col justify-center px-6 py-12 sm:px-12">
+        <div className="mx-auto w-full max-w-sm">
+          <Link href="/" className="text-sm text-muted-foreground hover:text-foreground">
+            ← Back to reklu.app
           </Link>
-          <div className="rounded-2xl border bg-card/90 p-6 shadow-xl shadow-foreground/5">
-            <div className="mb-6">
-              <div className="mb-3 flex w-fit items-center gap-2 rounded-full border bg-muted/50 px-3 py-1 text-xs text-muted-foreground">
-                <Sparkles className="size-3 text-primary" />
-                Continue your model workspace
-              </div>
-              <h1 className="text-3xl font-semibold tracking-tight">Welcome back</h1>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                Sign in to pick up your chats, artifacts, provider keys, and workspace usage.
-              </p>
-            </div>
+          <h1 className="mt-8 text-3xl font-semibold tracking-tight">Welcome back</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Sign in to continue your conversations.
+          </p>
           {process.env.GOOGLE_CLIENT_ID && (
             <form
               action={async () => {
@@ -55,7 +46,7 @@ export default async function SignInPage({
               }}
               className="mt-6"
             >
-              <Button type="submit" variant="outline" className="w-full rounded-full" size="lg">
+              <Button type="submit" variant="outline" className="w-full" size="lg">
                 <GoogleIcon /> Continue with Google
               </Button>
             </form>
@@ -77,9 +68,7 @@ export default async function SignInPage({
             {error && (
               <p className="text-sm text-destructive">Invalid email or password.</p>
             )}
-            <Button type="submit" className="w-full rounded-full">
-              Sign in <ArrowRight />
-            </Button>
+            <Button type="submit" className="w-full">Sign in</Button>
           </form>
           <p className="mt-8 text-sm text-muted-foreground">
             New to Reklu?{" "}
@@ -87,32 +76,25 @@ export default async function SignInPage({
               Create an account
             </Link>
           </p>
-          </div>
         </div>
       </div>
-      <div className="reklu-shell hidden p-8 lg:flex lg:items-center lg:justify-center">
-        <Card className="w-full max-w-lg border-border/50 shadow-2xl shadow-foreground/10">
+      <div className="hidden bg-muted/30 p-12 lg:flex lg:items-center lg:justify-center">
+        <Card className="w-full max-w-md border-border/50">
           <CardHeader>
-            <CardTitle className="text-2xl">Try the demo workspace</CardTitle>
+            <CardTitle className="text-base">Try the demo</CardTitle>
             <CardDescription>
-              Explore Reklu with seeded conversations, models, usage, and admin-ready provider setup.
+              Use the seeded demo account to explore the workspace without signing up.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-5 text-sm">
-            <div className="rounded-xl border bg-background/70 p-4">
-              <div className="text-muted-foreground">Email</div>
-              <code className="mt-1 block rounded bg-muted px-2 py-1">demo@reklu.app</code>
+          <CardContent className="space-y-2 text-sm">
+            <div>
+              <span className="text-muted-foreground">Email:</span>{" "}
+              <code className="rounded bg-muted px-1.5 py-0.5">demo@reklu.app</code>
             </div>
-            <div className="rounded-xl border bg-background/70 p-4">
-              <div className="text-muted-foreground">Password</div>
-              <code className="mt-1 block rounded bg-muted px-2 py-1">demopassword</code>
+            <div>
+              <span className="text-muted-foreground">Password:</span>{" "}
+              <code className="rounded bg-muted px-1.5 py-0.5">demopassword</code>
             </div>
-            {["Multi-model chat", "Reklu Auto routing", "Usage and cost tracking"].map((item) => (
-              <div key={item} className="flex items-center gap-2 text-muted-foreground">
-                <Check className="size-4 text-primary" />
-                {item}
-              </div>
-            ))}
           </CardContent>
         </Card>
       </div>
