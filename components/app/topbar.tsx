@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "next-themes";
-import { Sun, Moon } from "lucide-react";
+import { Activity, Moon, Sun } from "lucide-react";
 
 export function TopBar({ user }: { user: { name: string | null; email: string | null } }) {
   const router = useRouter();
@@ -14,16 +14,22 @@ export function TopBar({ user }: { user: { name: string | null; email: string | 
   React.useEffect(() => setMounted(true), []);
 
   return (
-    <header className="flex h-14 items-center justify-between border-b bg-background/80 px-4 backdrop-blur">
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <span className="hidden sm:inline">Reklu</span>
-        <span className="hidden sm:inline">/</span>
-        <span className="text-foreground">Chat</span>
+    <header className="flex h-16 items-center justify-between border-b bg-background/85 px-4 backdrop-blur-xl">
+      <div className="flex items-center gap-3">
+        <div className="hidden rounded-full border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground shadow-sm sm:flex sm:items-center sm:gap-2">
+          <Activity className="size-3.5 text-primary" />
+          Workspace ready
+        </div>
+        <div className="text-sm">
+          <div className="font-medium text-foreground">Chat</div>
+          <div className="text-xs text-muted-foreground">Route, compare, and create with models</div>
+        </div>
       </div>
       <div className="flex items-center gap-1.5">
         <Button
           variant="ghost"
           size="icon"
+          className="rounded-full"
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           aria-label="Toggle theme"
         >
