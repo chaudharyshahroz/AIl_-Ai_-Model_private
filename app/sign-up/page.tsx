@@ -7,7 +7,6 @@ import { db } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowRight, Check, Sparkles } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Create your account" };
@@ -72,25 +71,17 @@ export default async function SignUpPage({
   }
 
   return (
-    <div className="grid min-h-screen lg:grid-cols-[0.92fr_1.08fr]">
-      <div className="flex flex-col justify-center px-5 py-10 sm:px-10">
-        <div className="mx-auto w-full max-w-md">
-          <Link href="/" className="mb-10 flex w-fit items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-            <span className="grid size-8 place-items-center rounded-full bg-foreground text-xs font-black text-background">R</span>
-            Back to Reklu
+    <div className="grid min-h-screen lg:grid-cols-2">
+      <div className="flex flex-col justify-center px-6 py-12 sm:px-12">
+        <div className="mx-auto w-full max-w-sm">
+          <Link href="/" className="text-sm text-muted-foreground hover:text-foreground">
+            ← Back to reklu.app
           </Link>
-          <div className="rounded-2xl border bg-card/90 p-6 shadow-xl shadow-foreground/5">
-            <div className="mb-6">
-              <div className="mb-3 flex w-fit items-center gap-2 rounded-full border bg-muted/50 px-3 py-1 text-xs text-muted-foreground">
-                <Sparkles className="size-3 text-primary" />
-                Create a connected AI desk
-              </div>
-              <h1 className="text-3xl font-semibold tracking-tight">Create your account</h1>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                Your personal workspace is created automatically. Invite teammates when you are ready.
-              </p>
-            </div>
-          <form action={signUpAction} className="space-y-4">
+          <h1 className="mt-8 text-3xl font-semibold tracking-tight">Create your account</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            A personal workspace is created automatically. Invite teammates later.
+          </p>
+          <form action={signUpAction} className="mt-8 space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
               <Input id="name" name="name" required autoComplete="name" />
@@ -110,9 +101,7 @@ export default async function SignUpPage({
             {error === "invalid" && (
               <p className="text-sm text-destructive">Please fill out all fields correctly.</p>
             )}
-            <Button type="submit" className="w-full rounded-full">
-              Create account <ArrowRight />
-            </Button>
+            <Button type="submit" className="w-full">Create account</Button>
           </form>
           <p className="mt-8 text-sm text-muted-foreground">
             Already have an account?{" "}
@@ -120,26 +109,17 @@ export default async function SignUpPage({
               Sign in
             </Link>
           </p>
-          </div>
         </div>
       </div>
-      <div className="reklu-shell hidden p-8 lg:flex lg:items-center lg:justify-center">
-        <div className="w-full max-w-lg rounded-2xl border bg-card/90 p-8 shadow-2xl shadow-foreground/10">
-          <div className="model-rail mb-8 h-2 rounded-full" />
-          <h2 className="text-3xl font-semibold tracking-tight">What opens on day one</h2>
-          <div className="mt-8 grid gap-3">
-            {[
-              "Chat with configured leading models",
-              "Use Reklu Auto for routing decisions",
-              "Track latency, tokens, and cost",
-              "Prepare workspace providers and skills",
-            ].map((item) => (
-              <div key={item} className="flex items-start gap-3 rounded-xl border bg-background/70 p-4 text-sm">
-                <Check className="mt-0.5 size-4 text-primary" />
-                <span>{item}</span>
-              </div>
-            ))}
-          </div>
+      <div className="hidden bg-muted/30 p-12 lg:flex lg:items-center lg:justify-center">
+        <div className="max-w-sm space-y-4 text-sm text-muted-foreground">
+          <p className="text-foreground font-medium">What you get</p>
+          <ul className="space-y-1.5">
+            <li>· Access to leading AI models</li>
+            <li>· Personal workspace with file uploads</li>
+            <li>· Optional BYOK for any provider</li>
+            <li>· Upgrade for premium models and team features</li>
+          </ul>
         </div>
       </div>
     </div>
