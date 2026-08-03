@@ -232,7 +232,6 @@ export function ChatWorkspace({
       if (serverMessageId) {
         setMessages((m) =>
           m.map((x) => {
-            if (x.id === userMessage.id) return { ...x, id: serverMessageId! };
             if (x.id === assistantId) {
               return {
                 ...x,
@@ -298,21 +297,21 @@ export function ChatWorkspace({
   }
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="reklu-shell flex h-full flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between border-b px-4 py-2">
+      <div className="flex items-center justify-between border-b bg-card/65 px-5 py-3 backdrop-blur">
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" onClick={newChat}>
+          <Button variant="ghost" size="sm" className="rounded-full" onClick={newChat}>
             <MessageSquarePlus className="size-4" />
             New chat
           </Button>
-          <h1 className="hidden text-sm font-medium sm:block">
+          <h1 className="hidden max-w-md truncate text-sm font-medium sm:block">
             {initialTitle ?? "New chat"}
           </h1>
         </div>
         <div className="flex items-center gap-2">
           {meta && (
-            <Badge variant="outline" className="gap-1.5">
+            <Badge variant="outline" className="gap-1.5 rounded-full bg-background/70">
               <Sparkles className="size-3" />
               {meta.model.displayName}
             </Badge>
@@ -329,7 +328,7 @@ export function ChatWorkspace({
             }}
           />
         ) : (
-          <div className="mx-auto max-w-3xl space-y-6 px-4 py-8">
+          <div className="mx-auto max-w-4xl space-y-7 px-4 py-8">
             {messages.map((m) => (
               <MessageBubble key={m.id} message={m} />
             ))}
@@ -358,9 +357,9 @@ export function ChatWorkspace({
       )}
 
       {/* Composer */}
-      <div className="border-t bg-background/80 p-4 backdrop-blur">
-        <div className="mx-auto max-w-3xl">
-          <div className="rounded-2xl border bg-muted/30 shadow-sm transition-colors focus-within:border-foreground/30">
+      <div className="border-t bg-card/70 p-4 backdrop-blur-xl">
+        <div className="mx-auto max-w-4xl">
+          <div className="rounded-2xl border bg-background/85 shadow-xl shadow-foreground/5 transition-colors focus-within:border-primary/50">
             <Textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -368,7 +367,7 @@ export function ChatWorkspace({
               placeholder="Message Reklu…"
               rows={1}
               disabled={isStreaming}
-              className="min-h-[44px] resize-none border-0 bg-transparent px-4 py-3 focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="min-h-[52px] resize-none border-0 bg-transparent px-4 py-4 focus-visible:ring-0 focus-visible:ring-offset-0"
               style={{ height: "auto", maxHeight: "200px" }}
               onInput={(e) => {
                 const el = e.currentTarget;
@@ -378,7 +377,7 @@ export function ChatWorkspace({
             />
             <div className="flex items-center justify-between gap-2 px-2 pb-2">
               <div className="flex items-center gap-1">
-                <Button variant="ghost" size="icon" disabled title="Attachments (coming soon)">
+                <Button variant="ghost" size="icon" className="rounded-full" disabled title="Attachments (coming soon)">
                   <Paperclip className="size-4" />
                 </Button>
                 <ModelSelector
@@ -394,7 +393,7 @@ export function ChatWorkspace({
               </div>
               <div className="flex items-center gap-1">
                 {isStreaming ? (
-                  <Button onClick={stop} variant="default" size="icon" aria-label="Stop">
+                  <Button onClick={stop} variant="default" size="icon" className="rounded-full" aria-label="Stop">
                     <Square className="size-3.5 fill-current" />
                   </Button>
                 ) : (
@@ -402,6 +401,7 @@ export function ChatWorkspace({
                     onClick={send}
                     disabled={!input.trim()}
                     size="icon"
+                    className="rounded-full"
                     aria-label="Send"
                   >
                     <ArrowUp className="size-4" />
@@ -439,7 +439,7 @@ function ModelSelector({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-1.5">
+        <Button variant="ghost" size="sm" className="gap-1.5 rounded-full">
           <Sparkles className="size-3.5" />
           {label}
           <ChevronDown className="size-3 opacity-60" />
@@ -501,7 +501,7 @@ function PreferenceSelector({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-1 text-xs">
+        <Button variant="ghost" size="sm" className="gap-1 rounded-full text-xs">
           {preference === "auto" ? "Auto" : preference}
           <ChevronDown className="size-3 opacity-60" />
         </Button>
@@ -531,17 +531,17 @@ function MessageBubble({ message }: { message: MessageItem }) {
   return (
     <div className={cn("flex gap-3", isUser ? "justify-end" : "justify-start")}>
       {!isUser && (
-        <div className="grid size-7 shrink-0 place-items-center rounded-full bg-foreground text-background">
+        <div className="grid size-8 shrink-0 place-items-center rounded-full bg-foreground text-background shadow-sm">
           <Sparkles className="size-3.5" />
         </div>
       )}
-      <div className={cn("min-w-0 max-w-[80%]", isUser ? "items-end" : "items-start")}>
+      <div className={cn("min-w-0 max-w-[82%]", isUser ? "items-end" : "items-start")}>
         {isUser ? (
-          <div className="rounded-2xl bg-muted px-4 py-2.5 text-sm">
+          <div className="rounded-2xl bg-foreground px-4 py-3 text-sm text-background shadow-sm">
             <p className="whitespace-pre-wrap break-words">{message.content}</p>
           </div>
         ) : (
-          <div>
+          <div className="rounded-2xl border bg-card/90 px-4 py-3 shadow-sm">
             <div className="prose-chat text-foreground">
               {isEmpty ? (
                 <span className="text-muted-foreground">Thinking…</span>
@@ -563,7 +563,7 @@ function MessageBubble({ message }: { message: MessageItem }) {
         )}
       </div>
       {isUser && (
-        <div className="grid size-7 shrink-0 place-items-center rounded-full bg-muted text-muted-foreground text-xs font-medium">
+        <div className="grid size-8 shrink-0 place-items-center rounded-full bg-card text-xs font-medium text-muted-foreground shadow-sm">
           U
         </div>
       )}
@@ -582,9 +582,9 @@ function MessageMeta({
 }) {
   const hasUsage = (message.inputTokens ?? 0) > 0 || (message.outputTokens ?? 0) > 0;
   return (
-    <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
+    <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
       {message.modelId && (
-        <span className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px]">
+        <span className="rounded-full bg-muted px-2 py-0.5 font-mono text-[10px]">
           {message.modelId}
         </span>
       )}
@@ -624,13 +624,13 @@ function EmptyState({ onPick }: { onPick: (text: string) => void }) {
     "Generate a 6-slide outline for a Q3 go-to-market plan",
   ];
   return (
-    <div className="mx-auto max-w-3xl px-4 py-16">
+    <div className="mx-auto max-w-4xl px-4 py-16">
       <div className="mb-10 text-center">
-        <div className="mx-auto mb-4 grid size-12 place-items-center rounded-2xl bg-foreground text-background">
+        <div className="mx-auto mb-4 grid size-14 place-items-center rounded-full bg-foreground text-background shadow-lg shadow-foreground/10">
           <Sparkles className="size-6" />
         </div>
-        <h2 className="text-2xl font-semibold tracking-tight">How can I help today?</h2>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <h2 className="text-4xl font-semibold tracking-tight">What should Reklu route today?</h2>
+        <p className="mt-3 text-sm text-muted-foreground">
           Try a prompt, or let Reklu Auto pick the best model for you.
         </p>
       </div>
@@ -639,7 +639,7 @@ function EmptyState({ onPick }: { onPick: (text: string) => void }) {
           <button
             key={s}
             onClick={() => onPick(s)}
-            className="rounded-xl border bg-card p-4 text-left text-sm transition-colors hover:bg-accent"
+            className="rounded-2xl border bg-card/90 p-4 text-left text-sm shadow-sm transition-colors hover:bg-accent"
           >
             {s}
           </button>

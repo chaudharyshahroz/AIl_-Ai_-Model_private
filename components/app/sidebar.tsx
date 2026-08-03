@@ -70,12 +70,16 @@ export function Sidebar({
   const pathname = usePathname();
 
   return (
-    <aside className="flex h-full flex-col border-r bg-muted/10">
-      <div className="flex h-14 items-center gap-2 border-b px-4">
-        <div className="grid size-7 place-items-center rounded-lg bg-foreground text-background">
-          <span className="text-xs font-bold">R</span>
+    <aside className="flex h-full flex-col border-r bg-card/80 shadow-sm">
+      <div className="flex h-16 items-center gap-2 border-b px-4">
+        <div className="relative grid size-8 place-items-center rounded-full bg-foreground text-background">
+          <span className="text-xs font-black">R</span>
+          <span className="model-rail absolute -bottom-0.5 h-1 w-5 rounded-full" />
         </div>
-        <span className="font-semibold">Reklu</span>
+        <div>
+          <span className="block text-sm font-semibold leading-none">Reklu</span>
+          <span className="text-[11px] text-muted-foreground">model workspace</span>
+        </div>
       </div>
 
       <div className="space-y-1 p-3">
@@ -86,7 +90,7 @@ export function Sidebar({
               key={item.href}
               asChild
               variant={item.label === "New chat" ? "default" : "ghost"}
-              className="w-full justify-start gap-2"
+              className={cn("w-full justify-start gap-2 rounded-full", item.label === "New chat" && "shadow-sm")}
               size="sm"
             >
               <Link href={item.href}>
@@ -99,7 +103,9 @@ export function Sidebar({
       </div>
 
       <div className="flex-1 overflow-hidden">
-        <div className="px-4 pb-1 pt-1 text-xs font-medium text-muted-foreground">Workspace</div>
+        <div className="px-4 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+          Workspace
+        </div>
         <div className="px-3 pb-1.5 space-y-0.5">
           {SECONDARY.map((item) => {
             const active = pathname === item.href || pathname?.startsWith(item.href + "/");
@@ -108,7 +114,7 @@ export function Sidebar({
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-2 rounded-md px-2 py-1 text-sm transition-colors",
+                  "flex items-center gap-2 rounded-full px-3 py-2 text-sm transition-colors",
                   active ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground",
                 )}
               >
@@ -119,7 +125,9 @@ export function Sidebar({
           })}
         </div>
 
-        <div className="px-4 pb-2 pt-2 text-xs font-medium text-muted-foreground">Chats</div>
+        <div className="px-4 pb-2 pt-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+          Chats
+        </div>
         <ScrollArea className="h-[calc(100%-15rem)] scrollbar-thin">
           <div className="space-y-0.5 px-2 pb-4">
             {conversations.length === 0 ? (
@@ -134,7 +142,7 @@ export function Sidebar({
                     key={c.id}
                     href={`/app/chat/${c.id}`}
                     className={cn(
-                      "block rounded-md px-2.5 py-2 text-sm transition-colors",
+                      "block rounded-xl px-3 py-2.5 text-sm transition-colors",
                       active ? "bg-accent text-accent-foreground" : "hover:bg-muted",
                     )}
                   >
@@ -155,10 +163,10 @@ export function Sidebar({
         </ScrollArea>
       </div>
 
-      <div className="border-t p-2">
+      <div className="border-t p-3">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="flex w-full items-center gap-2.5 rounded-md p-2 text-left transition-colors hover:bg-muted">
+            <button className="flex w-full items-center gap-2.5 rounded-xl border bg-background/70 p-2 text-left transition-colors hover:bg-muted">
               <Avatar className="size-7">
                 {user.image && <AvatarImage src={user.image} alt={user.name ?? user.email ?? ""} />}
                 <AvatarFallback>{(user.name ?? user.email ?? "U").slice(0, 1).toUpperCase()}</AvatarFallback>

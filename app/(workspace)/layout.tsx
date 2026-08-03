@@ -62,7 +62,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="grid h-screen grid-cols-[260px_1fr] bg-background">
+    <div className="grid h-screen grid-cols-[280px_1fr] bg-background">
       <Sidebar
         user={{
           id: session.user.id,
