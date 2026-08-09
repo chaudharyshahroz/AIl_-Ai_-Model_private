@@ -2,9 +2,15 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { SpectrumRule } from "@/components/ui/spectrum-rule";
+import { ProviderDot } from "@/components/ui/provider-badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +21,7 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu";
-import { cn, formatLatency, formatMicros, formatTokens } from "@/lib/utils";
+import { cn, formatMicros, formatTokens } from "@/lib/utils";
 import {
   ArrowUp,
   Square,
@@ -24,7 +30,6 @@ import {
   AlertCircle,
   Copy,
   Check,
-  RefreshCw,
   Paperclip,
   MessageSquarePlus,
   KeyRound,
@@ -313,7 +318,7 @@ export function ChatWorkspace({
         <div className="flex items-center gap-2">
           {meta && (
             <Badge variant="outline" className="gap-1.5">
-              <Sparkles className="size-3" />
+              <ProviderDot providerId={meta.model.providerId} />
               {meta.model.displayName}
             </Badge>
           )}
@@ -330,14 +335,16 @@ export function ChatWorkspace({
           />
         ) : (
           <div className="mx-auto max-w-3xl space-y-6 px-4 py-8">
-            {messages.map((m) => (
-              <MessageBubble key={m.id} message={m} />
-            ))}
+            <AnimatePresence initial={false}>
+              {messages.map((m) => (
+                <MessageBubble key={m.id} message={m} />
+              ))}
+            </AnimatePresence>
             {isStreaming && messages[messages.length - 1]?.content === "" && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span className="size-1.5 animate-pulse rounded-full bg-foreground" />
-                <span className="size-1.5 animate-pulse rounded-full bg-foreground [animation-delay:120ms]" />
-                <span className="size-1.5 animate-pulse rounded-full bg-foreground [animation-delay:240ms]" />
+              <div className="flex items-center gap-1.5 pl-10 text-sm text-muted-foreground">
+                <span className="size-1.5 animate-pulse rounded-full bg-primary" />
+                <span className="size-1.5 animate-pulse rounded-full bg-primary [animation-delay:120ms]" />
+                <span className="size-1.5 animate-pulse rounded-full bg-primary [animation-delay:240ms]" />
               </div>
             )}
           </div>
@@ -360,7 +367,10 @@ export function ChatWorkspace({
       {/* Composer */}
       <div className="border-t bg-background/80 p-4 backdrop-blur">
         <div className="mx-auto max-w-3xl">
-          <div className="rounded-2xl border bg-muted/30 shadow-sm transition-colors focus-within:border-foreground/30">
+          <div className="relative overflow-hidden rounded-2xl border bg-muted/30 shadow-sm transition-colors focus-within:border-foreground/30">
+            {isStreaming && (
+              <div className="spectrum-rule-animated absolute inset-x-0 top-0 h-[2px]" />
+            )}
             <Textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -476,7 +486,10 @@ function ModelSelector({
               }}
             >
               <div className="flex w-full items-center justify-between gap-2">
-                <span>{m.displayName}</span>
+                <span className="flex items-center gap-1.5">
+                  <ProviderDot providerId={m.providerId} />
+                  {m.displayName}
+                </span>
                 <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
                   {m.supportsReasoning && <Badge variant="outline" className="px-1 py-0">R</Badge>}
                   {m.supportsVision && <Badge variant="outline" className="px-1 py-0">V</Badge>}
@@ -529,7 +542,12 @@ function MessageBubble({ message }: { message: MessageItem }) {
   const isEmpty = !message.content && isAssistant;
 
   return (
-    <div className={cn("flex gap-3", isUser ? "justify-end" : "justify-start")}>
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      className={cn("flex gap-3", isUser ? "justify-end" : "justify-start")}
+    >
       {!isUser && (
         <div className="grid size-7 shrink-0 place-items-center rounded-full bg-foreground text-background">
           <Sparkles className="size-3.5" />
@@ -546,7 +564,7 @@ function MessageBubble({ message }: { message: MessageItem }) {
               {isEmpty ? (
                 <span className="text-muted-foreground">Thinking…</span>
               ) : (
-                <MarkdownLite text={message.content} />
+                <Markdown text={message.content} />
               )}
             </div>
             {message.errorCode && (
@@ -563,11 +581,11 @@ function MessageBubble({ message }: { message: MessageItem }) {
         )}
       </div>
       {isUser && (
-        <div className="grid size-7 shrink-0 place-items-center rounded-full bg-muted text-muted-foreground text-xs font-medium">
+        <div className="grid size-7 shrink-0 place-items-center rounded-full bg-muted text-xs font-medium text-muted-foreground">
           U
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }
 
@@ -584,7 +602,8 @@ function MessageMeta({
   return (
     <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
       {message.modelId && (
-        <span className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px]">
+        <span className="inline-flex items-center gap-1.5 rounded bg-muted px-1.5 py-0.5 font-mono text-[10px]">
+          {message.modelProviderId && <ProviderDot providerId={message.modelProviderId} />}
           {message.modelId}
         </span>
       )}
@@ -626,10 +645,10 @@ function EmptyState({ onPick }: { onPick: (text: string) => void }) {
   return (
     <div className="mx-auto max-w-3xl px-4 py-16">
       <div className="mb-10 text-center">
-        <div className="mx-auto mb-4 grid size-12 place-items-center rounded-2xl bg-foreground text-background">
+        <div className="mx-auto mb-4 grid size-12 place-items-center rounded-xl bg-foreground text-background">
           <Sparkles className="size-6" />
         </div>
-        <h2 className="text-2xl font-semibold tracking-tight">How can I help today?</h2>
+        <h2 className="font-display text-2xl font-semibold tracking-tight">How can I help today?</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           Try a prompt, or let Reklu Auto pick the best model for you.
         </p>
@@ -639,7 +658,7 @@ function EmptyState({ onPick }: { onPick: (text: string) => void }) {
           <button
             key={s}
             onClick={() => onPick(s)}
-            className="rounded-xl border bg-card p-4 text-left text-sm transition-colors hover:bg-accent"
+            className="rounded-lg border bg-card p-4 text-left text-sm transition-colors hover:bg-accent"
           >
             {s}
           </button>
@@ -652,10 +671,10 @@ function EmptyState({ onPick }: { onPick: (text: string) => void }) {
 function NoProvidersEmpty() {
   return (
     <div className="mx-auto flex h-full max-w-md flex-col items-center justify-center px-6 text-center">
-      <div className="mb-4 grid size-12 place-items-center rounded-2xl bg-muted">
-        <Sparkles className="size-6 text-muted-foreground" />
+      <div className="mb-4 grid size-12 place-items-center rounded-xl bg-muted">
+        <Sparkles className="size-6 text-primary" />
       </div>
-      <h2 className="text-xl font-semibold">Add a provider to start chatting</h2>
+      <h2 className="font-display text-xl font-semibold">Add a provider to start chatting</h2>
       <p className="mt-2 text-sm text-muted-foreground">
         Reklu uses your key directly — no proxy, no markup. The key is encrypted at rest and never
         sent to your browser.
@@ -692,157 +711,65 @@ GOOGLE_AI_API_KEY=...`}
   );
 }
 
-/**
- * A minimal markdown renderer for chat output.
- * Covers paragraphs, headings, code blocks, inline code, lists, bold, italic, links.
- * Real apps would use a battle-tested library; this keeps the bundle small.
- */
-function MarkdownLite({ text }: { text: string }) {
-  const blocks = React.useMemo(() => parseMarkdown(text), [text]);
+/** Chat markdown rendering: GFM (tables, strikethrough) + syntax-highlighted code blocks. */
+function Markdown({ text }: { text: string }) {
   return (
-    <>
-      {blocks.map((b, i) => {
-        if (b.type === "code") {
-          return (
-            <pre key={i} className="my-3 overflow-x-auto rounded-lg border bg-muted/50 p-3 text-sm">
-              <code className="font-mono">{b.text}</code>
-            </pre>
-          );
-        }
-        if (b.type === "heading") {
-          const Tag = (`h${Math.min(6, b.level)}`) as keyof React.JSX.IntrinsicElements;
-          return (
-            <Tag key={i} className="mt-4 mb-2 font-semibold tracking-tight">
-              {renderInline(b.text)}
-            </Tag>
-          );
-        }
-        if (b.type === "list") {
-          const Tag = b.ordered ? "ol" : "ul";
-          return (
-            <Tag key={i} className={b.ordered ? "my-3 ml-6 list-decimal" : "my-3 ml-6 list-disc"}>
-              {b.items.map((it, j) => (
-                <li key={j}>{renderInline(it)}</li>
-              ))}
-            </Tag>
-          );
-        }
-        return (
-          <p key={i} className="my-3 leading-relaxed">
-            {renderInline(b.text)}
-          </p>
-        );
-      })}
-    </>
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm]}
+      rehypePlugins={[rehypeHighlight]}
+      components={{
+        a: ({ href, children }) => (
+          <a href={href} target="_blank" rel="noreferrer">
+            {children}
+          </a>
+        ),
+        pre: (props) => <CodeBlock {...props} />,
+        code: ({ className, children, ...rest }) => {
+          const isBlock = /language-/.test(className ?? "");
+          if (isBlock) {
+            return (
+              <code className={cn("font-mono", className)} {...rest}>
+                {children}
+              </code>
+            );
+          }
+          return <code {...rest}>{children}</code>;
+        },
+      }}
+    >
+      {text}
+    </ReactMarkdown>
   );
 }
 
-type MdBlock =
-  | { type: "p"; text: string }
-  | { type: "heading"; level: number; text: string }
-  | { type: "code"; text: string; lang?: string }
-  | { type: "list"; ordered: boolean; items: string[] };
+function CodeBlock(props: React.ComponentPropsWithoutRef<"pre">) {
+  const preRef = React.useRef<HTMLPreElement>(null);
+  const [copied, setCopied] = React.useState(false);
+  const child = React.isValidElement<{ className?: string }>(props.children) ? props.children : null;
+  const match = /language-(\w+)/.exec(child?.props.className ?? "");
+  const lang = match?.[1] ?? "text";
 
-function parseMarkdown(src: string): MdBlock[] {
-  const lines = src.split("\n");
-  const blocks: MdBlock[] = [];
-  let i = 0;
-  while (i < lines.length) {
-    const line = lines[i];
-    // Code fence
-    if (/^```/.test(line)) {
-      const lang = line.slice(3).trim() || undefined;
-      const buf: string[] = [];
-      i += 1;
-      while (i < lines.length && !/^```/.test(lines[i])) {
-        buf.push(lines[i]);
-        i += 1;
-      }
-      i += 1; // skip closing fence
-      blocks.push({ type: "code", text: buf.join("\n"), lang });
-      continue;
-    }
-    // Heading
-    const heading = /^(#{1,6})\s+(.*)$/.exec(line);
-    if (heading) {
-      blocks.push({ type: "heading", level: heading[1].length, text: heading[2] });
-      i += 1;
-      continue;
-    }
-    // List
-    if (/^\s*[-*]\s+/.test(line) || /^\s*\d+\.\s+/.test(line)) {
-      const ordered = /^\s*\d+\.\s+/.test(line);
-      const items: string[] = [];
-      while (
-        i < lines.length &&
-        ((ordered && /^\s*\d+\.\s+/.test(lines[i])) || (!ordered && /^\s*[-*]\s+/.test(lines[i])))
-      ) {
-        items.push(lines[i].replace(/^\s*([-*]|\d+\.)\s+/, ""));
-        i += 1;
-      }
-      blocks.push({ type: "list", ordered, items });
-      continue;
-    }
-    // Empty
-    if (line.trim() === "") {
-      i += 1;
-      continue;
-    }
-    // Paragraph
-    const buf: string[] = [line];
-    i += 1;
-    while (i < lines.length && lines[i].trim() !== "" && !/^```/.test(lines[i]) && !/^(#{1,6})\s+/.test(lines[i]) && !/^\s*[-*]\s+/.test(lines[i]) && !/^\s*\d+\.\s+/.test(lines[i])) {
-      buf.push(lines[i]);
-      i += 1;
-    }
-    blocks.push({ type: "p", text: buf.join("\n") });
+  async function copy() {
+    const text = preRef.current?.textContent ?? "";
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {}
   }
-  return blocks;
-}
 
-function renderInline(text: string): React.ReactNode[] {
-  // Match: **bold**, *italic*, `code`, [text](url)
-  const parts: React.ReactNode[] = [];
-  let i = 0;
-  let key = 0;
-  while (i < text.length) {
-    const bold = /^\*\*([^*]+)\*\*/.exec(text.slice(i));
-    if (bold) {
-      parts.push(<strong key={key++}>{bold[1]}</strong>);
-      i += bold[0].length;
-      continue;
-    }
-    const italic = /^\*([^*]+)\*/.exec(text.slice(i));
-    if (italic) {
-      parts.push(<em key={key++}>{italic[1]}</em>);
-      i += italic[0].length;
-      continue;
-    }
-    const code = /^`([^`]+)`/.exec(text.slice(i));
-    if (code) {
-      parts.push(
-        <code key={key++} className="rounded bg-muted px-1.5 py-0.5 font-mono text-[0.875em]">
-          {code[1]}
-        </code>,
-      );
-      i += code[0].length;
-      continue;
-    }
-    const link = /^\[([^\]]+)\]\(([^)]+)\)/.exec(text.slice(i));
-    if (link) {
-      parts.push(
-        <a key={key++} href={link[2]} target="_blank" rel="noreferrer" className="text-primary underline-offset-4 hover:underline">
-          {link[1]}
-        </a>,
-      );
-      i += link[0].length;
-      continue;
-    }
-    // Plain text up to next special char
-    const next = text.slice(i).search(/[*`[]/);
-    const end = next === -1 ? text.length : i + next;
-    parts.push(text.slice(i, end));
-    i = end;
-  }
-  return parts;
+  return (
+    <div className="my-3 overflow-hidden rounded-lg border">
+      <div className="flex items-center justify-between border-b bg-muted/50 px-3 py-1.5 text-xs text-muted-foreground">
+        <span className="font-mono">{lang}</span>
+        <button onClick={copy} className="inline-flex items-center gap-1 hover:text-foreground">
+          {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
+          {copied ? "Copied" : "Copy"}
+        </button>
+      </div>
+      <pre ref={preRef} className="overflow-x-auto bg-muted/20 p-3 text-sm">
+        {props.children}
+      </pre>
+    </div>
+  );
 }

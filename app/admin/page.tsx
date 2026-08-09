@@ -2,6 +2,8 @@ import { requireAdmin } from "@/lib/admin/auth";
 import { db } from "@/lib/db";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { AdminPageShell } from "@/components/admin/page-shell";
+import { ProviderDot } from "@/components/ui/provider-badge";
 import { formatMicros, formatRelativeTime, formatTokens } from "@/lib/utils";
 import { listConfiguredProviders } from "@/lib/env";
 import { listAdapterIds } from "@/lib/ai/registry";
@@ -89,12 +91,7 @@ export default async function AdminHome() {
   );
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6 p-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Admin overview</h1>
-        <p className="text-sm text-muted-foreground">Last 30 days · system-wide</p>
-      </div>
-
+    <AdminPageShell title="Admin overview" subtitle="Last 30 days · system-wide">
       <div className="grid gap-3 sm:grid-cols-4">
         <Stat icon={Users} label="Users" value={userCount.toString()} sub={`+${last24hUsers.length} today`} href="/admin/users" />
         <Stat icon={MessageSquare} label="Conversations" value={conversationCount.toLocaleString()} sub={`${messageCount.toLocaleString()} messages`} href="/admin/users" />
@@ -122,10 +119,9 @@ export default async function AdminHome() {
                   key={id}
                   className="flex items-center gap-1.5 rounded-md border px-2.5 py-1.5 text-xs"
                 >
-                  <span
-                    className={`size-1.5 rounded-full ${ok ? "bg-success" : "bg-muted-foreground/40"}`}
-                  />
+                  <ProviderDot providerId={id} className={!ok ? "opacity-30" : undefined} />
                   <span className="font-medium">{id}</span>
+                  {!ok && <span className="text-muted-foreground">no key</span>}
                 </div>
               );
             })}
@@ -231,7 +227,7 @@ export default async function AdminHome() {
           )}
         </CardContent>
       </Card>
-    </div>
+    </AdminPageShell>
   );
 }
 

@@ -5,9 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { AdminPageShell } from "@/components/admin/page-shell";
+import { ProviderDot } from "@/components/ui/provider-badge";
 import { revalidatePath } from "next/cache";
 import { formatMicros } from "@/lib/utils";
-import { Cpu, RotateCw, Power, PowerOff, AlertCircle } from "lucide-react";
+import { RotateCw, Power, PowerOff, AlertCircle } from "lucide-react";
 import { getAdapter } from "@/lib/ai/registry";
 import { PROVIDER_PRICING, priceFor } from "@/lib/ai/pricing";
 
@@ -155,14 +157,10 @@ export default async function AdminModelsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6 p-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Models</h1>
-        <p className="text-sm text-muted-foreground">
-          {models.filter((m) => m.isEnabledForUsers).length} of {models.length} models visible to users.
-        </p>
-      </div>
-
+    <AdminPageShell
+      title="Models"
+      subtitle={`${models.filter((m) => m.isEnabledForUsers).length} of ${models.length} models visible to users.`}
+    >
       {providers.map((provider) => {
         const providerModels = byProvider.get(provider.id) ?? [];
         return (
@@ -171,7 +169,7 @@ export default async function AdminModelsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle className="flex items-center gap-2 text-base">
-                    <Cpu className="size-4" /> {provider.displayName}
+                    <ProviderDot providerId={provider.id} /> {provider.displayName}
                   </CardTitle>
                   <CardDescription>
                     {providerModels.length} models · last sync{" "}
@@ -282,6 +280,6 @@ export default async function AdminModelsPage() {
           </Card>
         );
       })}
-    </div>
+    </AdminPageShell>
   );
 }

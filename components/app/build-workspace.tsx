@@ -3,16 +3,18 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { ProviderDot } from "@/components/ui/provider-badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn, truncate } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import {
   ArrowUp,
   Square,
@@ -215,10 +217,10 @@ export function BuildWorkspace({
     return (
       <div className="grid h-full place-items-center">
         <div className="max-w-md px-6 text-center">
-          <div className="mx-auto mb-4 grid size-12 place-items-center rounded-2xl bg-muted">
-            <Sparkles className="size-6 text-muted-foreground" />
+          <div className="mx-auto mb-4 grid size-12 place-items-center rounded-xl bg-muted">
+            <Sparkles className="size-6 text-primary" />
           </div>
-          <h2 className="text-xl font-semibold">Add a provider to start building</h2>
+          <h2 className="font-display text-xl font-semibold">Add a provider to start building</h2>
           <p className="mt-2 text-sm text-muted-foreground">
             Build uses your admin-configured provider keys. An admin needs to add at least one in
             the admin dashboard.
@@ -242,7 +244,10 @@ export function BuildWorkspace({
             <Code2 className="size-4 text-muted-foreground" />
             <h1 className="text-sm font-medium">Build</h1>
             {selectedModel && (
-              <Badge variant="outline" className="text-[10px]">{selectedModel.displayName}</Badge>
+              <Badge variant="outline" className="gap-1 text-[10px]">
+                <ProviderDot providerId={selectedModel.providerId} />
+                {selectedModel.displayName}
+              </Badge>
             )}
           </div>
           <Button
@@ -261,10 +266,10 @@ export function BuildWorkspace({
         <div ref={chatScrollRef} className="flex-1 overflow-y-auto">
           {messages.length === 0 ? (
             <div className="mx-auto max-w-md px-6 py-12 text-center">
-              <div className="mx-auto mb-4 grid size-12 place-items-center rounded-2xl bg-foreground text-background">
+              <div className="mx-auto mb-4 grid size-12 place-items-center rounded-xl bg-foreground text-background">
                 <Code2 className="size-6" />
               </div>
-              <h2 className="text-xl font-semibold">What do you want to build?</h2>
+              <h2 className="font-display text-xl font-semibold">What do you want to build?</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Describe a website, landing page, or app screen. Reklu generates a complete,
                 self-contained HTML file you can preview, iterate on, and export.
@@ -370,24 +375,30 @@ export function BuildWorkspace({
       <div className="flex h-full flex-col bg-muted/20">
         <div className="flex items-center justify-between border-b px-4 py-2">
           <div className="flex items-center gap-1 rounded-md border bg-muted/40 p-0.5 text-xs">
-            <button
-              onClick={() => setView("preview")}
-              className={cn(
-                "flex items-center gap-1 rounded px-2 py-1",
-                view === "preview" ? "bg-background shadow-sm" : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              <Eye className="size-3" /> Preview
-            </button>
-            <button
-              onClick={() => setView("code")}
-              className={cn(
-                "flex items-center gap-1 rounded px-2 py-1",
-                view === "code" ? "bg-background shadow-sm" : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              <Code2 className="size-3" /> Code
-            </button>
+            {(
+              [
+                { value: "preview", label: "Preview", icon: Eye },
+                { value: "code", label: "Code", icon: Code2 },
+              ] as const
+            ).map((opt) => (
+              <button
+                key={opt.value}
+                onClick={() => setView(opt.value)}
+                className={cn(
+                  "relative flex items-center gap-1 rounded px-2 py-1 transition-colors",
+                  view === opt.value ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {view === opt.value && (
+                  <motion.div
+                    layoutId="build-view-indicator"
+                    className="absolute inset-0 -z-10 rounded bg-background shadow-sm"
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                  />
+                )}
+                <opt.icon className="size-3" /> {opt.label}
+              </button>
+            ))}
           </div>
           <div className="flex items-center gap-1">
             {currentHtml && (
@@ -447,8 +458,8 @@ function ModelSelector({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-1 text-xs">
-          <Sparkles className="size-3" />
+        <Button variant="ghost" size="sm" className="gap-1.5 text-xs">
+          {current ? <ProviderDot providerId={current.providerId} /> : <Sparkles className="size-3" />}
           {current?.displayName ?? "Select model"}
           <ChevronDown className="size-3 opacity-60" />
         </Button>
@@ -458,7 +469,9 @@ function ModelSelector({
           <DropdownMenuItem
             key={`${m.providerId}/${m.modelId}`}
             onSelect={() => setModelId(m.modelId)}
+            className="gap-1.5"
           >
+            <ProviderDot providerId={m.providerId} />
             {m.displayName}
           </DropdownMenuItem>
         ))}

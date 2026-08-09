@@ -58,14 +58,28 @@ const config: Config = {
           DEFAULT: "hsl(var(--warning))",
           foreground: "hsl(var(--warning-foreground))",
         },
+        admin: {
+          DEFAULT: "hsl(var(--admin-accent))",
+          foreground: "hsl(var(--admin-accent-foreground))",
+        },
+        provider: {
+          openai: "hsl(var(--provider-openai))",
+          anthropic: "hsl(var(--provider-anthropic))",
+          google: "hsl(var(--provider-google))",
+          xai: "hsl(var(--provider-xai))",
+          deepseek: "hsl(var(--provider-deepseek))",
+          mistral: "hsl(var(--provider-mistral))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        xs: "calc(var(--radius) - 6px)",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "var(--font-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
       keyframes: {
@@ -88,6 +102,10 @@ const config: Config = {
         shimmer: {
           "100%": { transform: "translateX(100%)" },
         },
+        "spectrum-pan": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "100%": { backgroundPosition: "200% 50%" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -95,6 +113,7 @@ const config: Config = {
         "fade-in": "fade-in 0.3s ease-out",
         "pulse-soft": "pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         shimmer: "shimmer 2s linear infinite",
+        "spectrum-pan": "spectrum-pan 3s linear infinite",
       },
     },
   },

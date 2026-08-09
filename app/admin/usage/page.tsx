@@ -2,6 +2,8 @@ import { requireAdmin } from "@/lib/admin/auth";
 import { db } from "@/lib/db";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { AdminPageShell } from "@/components/admin/page-shell";
+import { ProviderDot } from "@/components/ui/provider-badge";
 import { formatMicros, formatTokens } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -93,12 +95,10 @@ export default async function AdminUsagePage({
   const maxDayCost = Math.max(1, ...byDay.map((d) => d.cost));
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6 p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">System usage</h1>
-          <p className="text-sm text-muted-foreground">Last {dayCount} days · all users, all orgs</p>
-        </div>
+    <AdminPageShell
+      title="System usage"
+      subtitle={`Last ${dayCount} days · all users, all orgs`}
+      actions={
         <div className="flex gap-1 rounded-md border bg-muted/30 p-0.5 text-xs">
           {[7, 30, 90, 180].map((d) => (
             <a
@@ -110,8 +110,8 @@ export default async function AdminUsagePage({
             </a>
           ))}
         </div>
-      </div>
-
+      }
+    >
       <div className="grid gap-3 sm:grid-cols-4">
         <Stat label="Total cost" value={formatMicros(totals._sum.costMicros ?? 0)} />
         <Stat label="Total tokens" value={formatTokens((totals._sum.inputTokens ?? 0) + (totals._sum.outputTokens ?? 0))} />
@@ -157,7 +157,10 @@ export default async function AdminUsagePage({
                 {byProvider.map((p) => (
                   <div key={p.providerId} className="flex items-center justify-between rounded-md border px-3 py-2 text-sm">
                     <div className="flex items-center gap-2">
-                      <Badge variant="outline">{p.providerId}</Badge>
+                      <Badge variant="outline" className="gap-1.5">
+                        <ProviderDot providerId={p.providerId} />
+                        {p.providerId}
+                      </Badge>
                       <span className="text-xs text-muted-foreground">{p._count._all} req</span>
                     </div>
                     <div className="flex items-center gap-3 text-xs">
@@ -183,6 +186,7 @@ export default async function AdminUsagePage({
                 {byModel.map((m) => (
                   <div key={`${m.providerId}/${m.modelId}`} className="flex items-center justify-between rounded-md border px-3 py-1.5 text-sm">
                     <div className="flex items-center gap-2">
+                      <ProviderDot providerId={m.providerId} />
                       <code className="font-mono text-xs">{m.modelId}</code>
                       <span className="text-xs text-muted-foreground">{m._count._all} req</span>
                     </div>
@@ -255,7 +259,7 @@ export default async function AdminUsagePage({
           </CardContent>
         </Card>
       </div>
-    </div>
+    </AdminPageShell>
   );
 }
 

@@ -72,10 +72,10 @@ export function Sidebar({
   return (
     <aside className="flex h-full flex-col border-r bg-muted/10">
       <div className="flex h-14 items-center gap-2 border-b px-4">
-        <div className="grid size-7 place-items-center rounded-lg bg-foreground text-background">
-          <span className="text-xs font-bold">R</span>
+        <div className="grid size-7 place-items-center rounded-md bg-foreground text-background">
+          <span className="font-display text-xs font-bold">R</span>
         </div>
-        <span className="font-semibold">Reklu</span>
+        <span className="font-display font-semibold">Reklu</span>
       </div>
 
       <div className="space-y-1 p-3">

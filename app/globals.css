@@ -4,74 +4,106 @@
 
 @layer base {
   :root {
-    /* Light theme */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 7%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 7%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 7%;
+    /* Light theme — warm paper, not stark white */
+    --background: 40 18% 97%;
+    --foreground: 30 8% 12%;
+    --card: 40 22% 99%;
+    --card-foreground: 30 8% 12%;
+    --popover: 40 22% 99%;
+    --popover-foreground: 30 8% 12%;
 
-    --primary: 245 58% 51%;          /* indigo */
-    --primary-foreground: 0 0% 100%;
+    --primary: 26 90% 54%;          /* ember */
+    --primary-foreground: 30 15% 8%;
 
-    --secondary: 240 5% 96%;
-    --secondary-foreground: 240 6% 10%;
+    --secondary: 36 12% 92%;
+    --secondary-foreground: 30 8% 16%;
 
-    --muted: 240 5% 96%;
-    --muted-foreground: 240 4% 40%;
+    --muted: 36 12% 92%;
+    --muted-foreground: 30 6% 42%;
 
-    --accent: 245 58% 96%;
-    --accent-foreground: 245 58% 30%;
+    --accent: 26 60% 93%;
+    --accent-foreground: 26 70% 28%;
 
-    --destructive: 0 72% 50%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 6 72% 48%;
+    --destructive-foreground: 40 22% 99%;
 
-    --success: 142 70% 38%;
-    --success-foreground: 0 0% 100%;
+    --success: 152 55% 34%;
+    --success-foreground: 40 22% 99%;
 
-    --warning: 38 92% 48%;
-    --warning-foreground: 0 0% 100%;
+    --warning: 35 88% 46%;
+    --warning-foreground: 40 22% 99%;
 
-    --border: 240 6% 90%;
-    --input: 240 6% 90%;
-    --ring: 245 58% 51%;
+    --border: 34 10% 87%;
+    --input: 34 10% 87%;
+    --ring: 26 90% 54%;
 
-    --radius: 0.625rem;
+    --admin-accent: 38 92% 42%;
+    --admin-accent-foreground: 40 22% 99%;
+
+    --radius: 0.5rem;
+
+    /* Provider spectrum — identity accents, used only for small dots/chips */
+    --provider-openai: 160 55% 40%;
+    --provider-anthropic: 16 65% 52%;
+    --provider-google: 210 70% 50%;
+    --provider-xai: 260 50% 58%;
+    --provider-deepseek: 190 65% 44%;
+    --provider-mistral: 35 85% 50%;
+
+    --spectrum-gradient: linear-gradient(
+      90deg,
+      hsl(var(--provider-openai)),
+      hsl(var(--provider-anthropic)),
+      hsl(var(--provider-mistral)),
+      hsl(var(--provider-google)),
+      hsl(var(--provider-xai)),
+      hsl(var(--provider-deepseek)),
+      hsl(var(--provider-openai))
+    );
   }
 
   .dark {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 98%;
+    --background: 30 4% 6%;
+    --foreground: 40 12% 95%;
+    --card: 30 5% 9%;
+    --card-foreground: 40 12% 95%;
+    --popover: 30 5% 9%;
+    --popover-foreground: 40 12% 95%;
 
-    --primary: 245 70% 70%;
-    --primary-foreground: 0 0% 7%;
+    --primary: 26 92% 58%;
+    --primary-foreground: 30 15% 8%;
 
-    --secondary: 240 4% 12%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 30 4% 14%;
+    --secondary-foreground: 40 12% 95%;
 
-    --muted: 240 4% 12%;
-    --muted-foreground: 240 5% 65%;
+    --muted: 30 4% 14%;
+    --muted-foreground: 34 6% 62%;
 
-    --accent: 245 40% 20%;
-    --accent-foreground: 245 70% 80%;
+    --accent: 26 45% 18%;
+    --accent-foreground: 26 80% 78%;
 
-    --destructive: 0 70% 55%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 6 70% 58%;
+    --destructive-foreground: 40 22% 99%;
 
-    --success: 142 60% 50%;
-    --success-foreground: 0 0% 7%;
+    --success: 152 45% 50%;
+    --success-foreground: 30 15% 8%;
 
-    --warning: 38 92% 60%;
-    --warning-foreground: 0 0% 7%;
+    --warning: 35 90% 58%;
+    --warning-foreground: 30 15% 8%;
 
-    --border: 240 4% 16%;
-    --input: 240 4% 16%;
-    --ring: 245 70% 70%;
+    --border: 30 4% 18%;
+    --input: 30 4% 18%;
+    --ring: 26 92% 58%;
+
+    --admin-accent: 38 92% 55%;
+    --admin-accent-foreground: 30 15% 8%;
+
+    --provider-openai: 160 50% 52%;
+    --provider-anthropic: 16 65% 62%;
+    --provider-google: 210 70% 64%;
+    --provider-xai: 260 55% 70%;
+    --provider-deepseek: 190 60% 58%;
+    --provider-mistral: 35 85% 62%;
   }
 
   * {
@@ -91,7 +123,7 @@
   }
 
   ::selection {
-    background: hsl(var(--primary) / 0.15);
+    background: hsl(var(--primary) / 0.2);
   }
 }
 
@@ -131,6 +163,22 @@
     background-size: 32px 32px;
     mask-image: radial-gradient(ellipse 60% 60% at 50% 0%, black 30%, transparent 80%);
   }
+
+  /* The spectrum rule — Reklu's signature mark. A thin gradient line cycling
+     through provider hues. Use once per view: under a wordmark, as an active-
+     tab indicator, or as the composer's streaming edge. Never tile it. */
+  .spectrum-rule {
+    height: 2px;
+    background-image: var(--spectrum-gradient);
+    background-size: 200% 100%;
+    border-radius: 9999px;
+  }
+  .spectrum-rule-animated {
+    height: 2px;
+    background-image: var(--spectrum-gradient);
+    background-size: 200% 100%;
+    animation: spectrum-pan 3s linear infinite;
+  }
 }
 
 /* Custom prose for chat messages */
@@ -158,14 +206,8 @@
 .prose-chat li {
   @apply my-1;
 }
-.prose-chat code {
+.prose-chat code:not(pre code) {
   @apply rounded bg-muted px-1.5 py-0.5 font-mono text-[0.875em];
-}
-.prose-chat pre {
-  @apply my-4 overflow-x-auto rounded-lg border bg-muted/50 p-4;
-}
-.prose-chat pre code {
-  @apply bg-transparent p-0 text-sm;
 }
 .prose-chat blockquote {
   @apply my-3 border-l-2 border-border pl-4 italic text-muted-foreground;
@@ -184,4 +226,56 @@
 }
 .prose-chat hr {
   @apply my-6 border-border;
+}
+
+/* Syntax highlighting theme (rehype-highlight) — token-driven, adapts with light/dark. */
+.hljs-keyword,
+.hljs-operator {
+  color: hsl(var(--primary));
+}
+.hljs-string,
+.hljs-regexp {
+  color: hsl(var(--success));
+}
+.hljs-number,
+.hljs-literal {
+  color: hsl(var(--provider-mistral));
+}
+.hljs-comment,
+.hljs-quote {
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+}
+.hljs-title,
+.hljs-title.function_,
+.hljs-section {
+  color: hsl(var(--provider-google));
+}
+.hljs-built_in,
+.hljs-type,
+.hljs-class .hljs-title {
+  color: hsl(var(--provider-anthropic));
+}
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-params {
+  color: hsl(var(--foreground));
+}
+.hljs-tag,
+.hljs-name,
+.hljs-selector-tag {
+  color: hsl(var(--provider-xai));
+}
+.hljs-deletion {
+  color: hsl(var(--destructive));
+}
+.hljs-addition {
+  color: hsl(var(--success));
+}
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: 600;
 }

@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Check, MessageSquare, Zap, Globe, Shield, Cpu, Wrench, FileText, Database } from "lucide-react";
+import { SpectrumRule } from "@/components/ui/spectrum-rule";
+import { MarketingHeader } from "@/components/marketing/header";
+import { MarketingFooter } from "@/components/marketing/footer";
+import { SectionEyebrow } from "@/components/marketing/section-eyebrow";
+import { MessageSquare, Zap, Globe, Shield, Cpu, Wrench, FileText, Database, Layers } from "lucide-react";
 
 export const metadata = { title: "Features" };
 
@@ -52,20 +55,17 @@ const FEATURES = [
 export default function FeaturesPage() {
   return (
     <div className="min-h-screen">
-      <header className="border-b">
-        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-6">
-          <Link href="/" className="font-semibold">Reklu</Link>
-          <Button asChild size="sm">
-            <Link href="/sign-up">Get started</Link>
-          </Button>
-        </div>
-      </header>
+      <MarketingHeader />
       <section className="mx-auto max-w-5xl px-6 py-20 text-center">
-        <Badge variant="outline" className="mb-4">Features</Badge>
-        <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl">
+        <div className="mx-auto mb-4 flex w-fit items-center gap-2 text-primary">
+          <Layers className="size-3.5" />
+          <span className="text-xs font-semibold uppercase tracking-[0.14em]">Features</span>
+        </div>
+        <h1 className="text-balance font-display text-4xl font-semibold tracking-tight sm:text-5xl">
           Everything you need in one workspace
         </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
+        <SpectrumRule className="mx-auto mt-6 w-16" />
+        <p className="mx-auto mt-6 max-w-2xl text-muted-foreground">
           Reklu is a premium, chat-first AI workspace. The features below are all designed to stay
           out of your way until you need them.
         </p>
@@ -75,7 +75,7 @@ export default function FeaturesPage() {
           {FEATURES.map((f) => (
             <Card key={f.title}>
               <CardContent className="p-6">
-                <f.icon className="size-5 text-muted-foreground" />
+                <f.icon className="size-5 text-primary" />
                 <h3 className="mt-3 font-medium">{f.title}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">{f.desc}</p>
               </CardContent>
@@ -83,15 +83,17 @@ export default function FeaturesPage() {
           ))}
         </div>
       </section>
-      <section className="border-t bg-muted/20 py-20">
+      <section className="border-t py-20">
         <div className="mx-auto max-w-3xl px-6 text-center">
-          <h2 className="text-3xl font-semibold tracking-tight">Try it now</h2>
+          <SectionEyebrow icon={Zap} label="Get started" center />
+          <h2 className="font-display text-3xl font-semibold tracking-tight">Try it now</h2>
           <p className="mt-3 text-muted-foreground">Open Reklu, start a chat, and see for yourself.</p>
           <Button asChild size="xl" className="mt-6">
             <Link href="/sign-up">Start using Reklu</Link>
           </Button>
         </div>
       </section>
+      <MarketingFooter />
     </div>
   );
 }

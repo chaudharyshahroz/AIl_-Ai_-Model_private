@@ -1,7 +1,10 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { SpectrumRule } from "@/components/ui/spectrum-rule";
+import { ProviderDot } from "@/components/ui/provider-badge";
+import { MarketingHeader } from "@/components/marketing/header";
+import { MarketingFooter } from "@/components/marketing/footer";
+import { Layers } from "lucide-react";
 import { formatMicros } from "@/lib/utils";
 import { db } from "@/lib/db";
 
@@ -17,16 +20,17 @@ export default async function ModelsPage() {
 
   return (
     <div className="min-h-screen">
-      <header className="border-b">
-        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-6">
-          <Link href="/" className="font-semibold">Reklu</Link>
-          <Button asChild size="sm"><Link href="/sign-up">Get started</Link></Button>
-        </div>
-      </header>
+      <MarketingHeader />
       <section className="mx-auto max-w-6xl px-6 py-16">
-        <Badge variant="outline" className="mb-4">Models</Badge>
-        <h1 className="text-4xl font-semibold tracking-tight">All models, transparent pricing</h1>
-        <p className="mt-3 max-w-2xl text-muted-foreground">
+        <div className="mb-4 flex items-center gap-2 text-primary">
+          <Layers className="size-3.5" />
+          <span className="text-xs font-semibold uppercase tracking-[0.14em]">Models</span>
+        </div>
+        <h1 className="font-display text-4xl font-semibold tracking-tight">
+          All models, transparent pricing
+        </h1>
+        <SpectrumRule className="mt-6 w-16" />
+        <p className="mt-6 max-w-2xl text-muted-foreground">
           Reklu uses direct official APIs. The prices below are the providers' list prices; you can
           also bring your own key. Admin-controlled — only enabled models are shown to users.
         </p>
@@ -35,7 +39,10 @@ export default async function ModelsPage() {
             <Card key={m.id}>
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
-                  <Badge variant="secondary">{m.provider.displayName}</Badge>
+                  <Badge variant="secondary" className="gap-1.5">
+                    <ProviderDot providerId={m.provider.id} />
+                    {m.provider.displayName}
+                  </Badge>
                   {m.supportsReasoning && <Badge variant="outline">Reasoning</Badge>}
                 </div>
                 <h3 className="mt-3 font-medium">{m.displayName}</h3>
@@ -59,6 +66,7 @@ export default async function ModelsPage() {
           ))}
         </div>
       </section>
+      <MarketingFooter />
     </div>
   );
 }

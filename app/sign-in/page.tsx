@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Wordmark } from "@/components/marketing/logo";
 
 export const dynamic = "force-dynamic";
 
@@ -31,10 +32,14 @@ export default async function SignInPage({
     <div className="grid min-h-screen lg:grid-cols-2">
       <div className="flex flex-col justify-center px-6 py-12 sm:px-12">
         <div className="mx-auto w-full max-w-sm">
-          <Link href="/" className="text-sm text-muted-foreground hover:text-foreground">
+          <Wordmark />
+          <Link
+            href="/"
+            className="mt-8 inline-block text-sm text-muted-foreground hover:text-foreground"
+          >
             ← Back to reklu.app
           </Link>
-          <h1 className="mt-8 text-3xl font-semibold tracking-tight">Welcome back</h1>
+          <h1 className="mt-4 font-display text-3xl font-semibold tracking-tight">Welcome back</h1>
           <p className="mt-2 text-sm text-muted-foreground">
             Sign in to continue your conversations.
           </p>
@@ -78,8 +83,10 @@ export default async function SignInPage({
           </p>
         </div>
       </div>
-      <div className="hidden bg-muted/30 p-12 lg:flex lg:items-center lg:justify-center">
-        <Card className="w-full max-w-md border-border/50">
+      <div className="relative hidden overflow-hidden bg-muted/30 p-12 lg:flex lg:items-center lg:justify-center">
+        <div className="absolute inset-0 grid-bg" />
+        <Card className="relative w-full max-w-md">
+          <div className="spectrum-rule absolute inset-x-6 -top-px" />
           <CardHeader>
             <CardTitle className="text-base">Try the demo</CardTitle>
             <CardDescription>
@@ -89,11 +96,11 @@ export default async function SignInPage({
           <CardContent className="space-y-2 text-sm">
             <div>
               <span className="text-muted-foreground">Email:</span>{" "}
-              <code className="rounded bg-muted px-1.5 py-0.5">demo@reklu.app</code>
+              <code className="rounded bg-muted px-1.5 py-0.5 font-mono">demo@reklu.app</code>
             </div>
             <div>
               <span className="text-muted-foreground">Password:</span>{" "}
-              <code className="rounded bg-muted px-1.5 py-0.5">demopassword</code>
+              <code className="rounded bg-muted px-1.5 py-0.5 font-mono">demopassword</code>
             </div>
           </CardContent>
         </Card>

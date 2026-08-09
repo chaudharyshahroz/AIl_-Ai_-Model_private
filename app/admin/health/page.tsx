@@ -2,10 +2,12 @@ import { requireAdmin } from "@/lib/admin/auth";
 import { db } from "@/lib/db";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { AdminPageShell } from "@/components/admin/page-shell";
+import { ProviderDot } from "@/components/ui/provider-badge";
 import { listConfiguredProviders } from "@/lib/env";
 import { getAdapter } from "@/lib/ai/registry";
 import { decrypt } from "@/lib/crypto";
-import { CheckCircle2, AlertCircle, Cpu, Database, Server } from "lucide-react";
+import { CheckCircle2, AlertCircle, Database, Server } from "lucide-react";
 import { formatRelativeTime } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -55,12 +57,7 @@ export default async function AdminHealthPage() {
   const errorRate = totalCount === 0 ? 0 : (errorCount / totalCount) * 100;
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6 p-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">System health</h1>
-        <p className="text-sm text-muted-foreground">Live provider status and error rate.</p>
-      </div>
-
+    <AdminPageShell title="System health" subtitle="Live provider status and error rate." maxWidth="5xl">
       <div className="grid gap-3 sm:grid-cols-3">
         <Card>
           <CardContent className="p-4">
@@ -108,10 +105,10 @@ export default async function AdminHealthPage() {
             {providerHealth.map((h) => (
               <div key={h.provider.id} className="flex items-center justify-between rounded-lg border bg-card p-3">
                 <div className="flex items-center gap-3">
-                  <div className={`grid size-9 place-items-center rounded-lg ${
-                    h.ping.ok ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"
+                  <div className={`relative grid size-9 place-items-center rounded-lg ${
+                    h.ping.ok ? "bg-success/10" : "bg-destructive/10"
                   }`}>
-                    <Cpu className="size-4" />
+                    <ProviderDot providerId={h.provider.id} />
                   </div>
                   <div>
                     <div className="font-medium">{h.provider.displayName}</div>
@@ -152,6 +149,6 @@ export default async function AdminHealthPage() {
           </p>
         </CardContent>
       </Card>
-    </div>
+    </AdminPageShell>
   );
 }

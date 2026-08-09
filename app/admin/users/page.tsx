@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { AdminPageShell } from "@/components/admin/page-shell";
 import { revalidatePath } from "next/cache";
 import { formatMicros, formatRelativeTime, formatTokens } from "@/lib/utils";
 import { Search, Ban, CheckCircle2, ShieldCheck, Coins } from "lucide-react";
@@ -119,14 +120,10 @@ export default async function AdminUsersPage({
   }
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6 p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Users</h1>
-          <p className="text-sm text-muted-foreground">
-            {total.toLocaleString()} total · page {pageNum} of {totalPages || 1}
-          </p>
-        </div>
+    <AdminPageShell
+      title="Users"
+      subtitle={`${total.toLocaleString()} total · page ${pageNum} of ${totalPages || 1}`}
+      actions={
         <form className="relative w-64">
           <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
@@ -136,8 +133,8 @@ export default async function AdminUsersPage({
             className="pl-8"
           />
         </form>
-      </div>
-
+      }
+    >
       <Card>
         <CardContent className="p-0">
           <div className="divide-y">
@@ -230,7 +227,7 @@ export default async function AdminUsersPage({
               href={q ? `/admin/users?q=${q}&page=${p}` : `/admin/users?page=${p}`}
               className={`rounded-md px-3 py-1 ${
                 p === pageNum
-                  ? "bg-foreground text-background"
+                  ? "bg-admin text-admin-foreground"
                   : "text-muted-foreground hover:bg-muted"
               }`}
             >
@@ -239,6 +236,6 @@ export default async function AdminUsersPage({
           ))}
         </div>
       )}
-    </div>
+    </AdminPageShell>
   );
 }

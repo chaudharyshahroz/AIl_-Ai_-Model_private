@@ -1,6 +1,7 @@
 import { requireAdmin } from "@/lib/admin/auth";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { AdminPageShell } from "@/components/admin/page-shell";
 import { Wrench, Sparkles, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -20,15 +21,11 @@ const PLANNED_SKILLS = [
 export default async function AdminSkillsPage() {
   await requireAdmin();
   return (
-    <div className="mx-auto max-w-5xl space-y-6 p-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Skills</h1>
-        <p className="text-sm text-muted-foreground">
-          Phase 4 of the build. Skills are versioned AI workflows — not prompts — that combine
-          instructions, model policy, tools, and quality checks.
-        </p>
-      </div>
-
+    <AdminPageShell
+      title="Skills"
+      subtitle="Phase 4 of the build. Skills are versioned AI workflows — not prompts — that combine instructions, model policy, tools, and quality checks."
+      maxWidth="5xl"
+    >
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-base">
@@ -76,6 +73,6 @@ export default async function AdminSkillsPage() {
           </ul>
         </CardContent>
       </Card>
-    </div>
+    </AdminPageShell>
   );
 }

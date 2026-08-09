@@ -11,9 +11,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     <div className="grid h-screen grid-cols-[240px_1fr] bg-background">
       <AdminSidebar adminName={user.name ?? user.email ?? "Admin"} adminEmail={user.email} />
       <div className="flex h-full flex-col overflow-hidden">
-        <div className="flex h-14 items-center gap-3 border-b bg-amber-500/5 px-6">
-          <ShieldCheck className="size-4 text-amber-600" />
-          <span className="text-sm font-medium text-amber-700 dark:text-amber-400">
+        <div className="flex h-14 items-center gap-3 border-b bg-admin/5 px-6">
+          <ShieldCheck className="size-4 text-admin" />
+          <span className="text-sm font-medium text-admin">
             Admin mode
           </span>
           <span className="text-xs text-muted-foreground">

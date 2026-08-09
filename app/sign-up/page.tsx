@@ -7,6 +7,8 @@ import { db } from "@/lib/db";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Wordmark } from "@/components/marketing/logo";
+import { Check } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Create your account" };
@@ -74,10 +76,16 @@ export default async function SignUpPage({
     <div className="grid min-h-screen lg:grid-cols-2">
       <div className="flex flex-col justify-center px-6 py-12 sm:px-12">
         <div className="mx-auto w-full max-w-sm">
-          <Link href="/" className="text-sm text-muted-foreground hover:text-foreground">
+          <Wordmark />
+          <Link
+            href="/"
+            className="mt-8 inline-block text-sm text-muted-foreground hover:text-foreground"
+          >
             ← Back to reklu.app
           </Link>
-          <h1 className="mt-8 text-3xl font-semibold tracking-tight">Create your account</h1>
+          <h1 className="mt-4 font-display text-3xl font-semibold tracking-tight">
+            Create your account
+          </h1>
           <p className="mt-2 text-sm text-muted-foreground">
             A personal workspace is created automatically. Invite teammates later.
           </p>
@@ -111,14 +119,22 @@ export default async function SignUpPage({
           </p>
         </div>
       </div>
-      <div className="hidden bg-muted/30 p-12 lg:flex lg:items-center lg:justify-center">
-        <div className="max-w-sm space-y-4 text-sm text-muted-foreground">
-          <p className="text-foreground font-medium">What you get</p>
-          <ul className="space-y-1.5">
-            <li>· Access to leading AI models</li>
-            <li>· Personal workspace with file uploads</li>
-            <li>· Optional BYOK for any provider</li>
-            <li>· Upgrade for premium models and team features</li>
+      <div className="relative hidden overflow-hidden bg-muted/30 p-12 lg:flex lg:items-center lg:justify-center">
+        <div className="absolute inset-0 grid-bg" />
+        <div className="relative max-w-sm space-y-4 text-sm text-muted-foreground">
+          <p className="font-medium text-foreground">What you get</p>
+          <ul className="space-y-2.5">
+            {[
+              "Access to leading AI models",
+              "Personal workspace with file uploads",
+              "Optional BYOK for any provider",
+              "Upgrade for premium models and team features",
+            ].map((f) => (
+              <li key={f} className="flex items-start gap-2">
+                <Check className="mt-0.5 size-4 shrink-0 text-primary" />
+                <span>{f}</span>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

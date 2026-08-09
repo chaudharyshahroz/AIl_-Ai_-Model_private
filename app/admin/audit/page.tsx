@@ -2,6 +2,7 @@ import { requireAdmin } from "@/lib/admin/auth";
 import { db } from "@/lib/db";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { AdminPageShell } from "@/components/admin/page-shell";
 import { formatRelativeTime } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -21,12 +22,11 @@ export default async function AdminAuditPage() {
   const actorMap = new Map(actors.map((a) => [a.id, a]));
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6 p-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Audit log</h1>
-        <p className="text-sm text-muted-foreground">Last 200 events · every admin action is recorded.</p>
-      </div>
-
+    <AdminPageShell
+      title="Audit log"
+      subtitle="Last 200 events · every admin action is recorded."
+      maxWidth="5xl"
+    >
       <Card>
         <CardContent className="p-0">
           <div className="divide-y">
@@ -63,6 +63,6 @@ export default async function AdminAuditPage() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </AdminPageShell>
   );
 }

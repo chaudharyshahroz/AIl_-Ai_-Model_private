@@ -31,13 +31,13 @@ const NAV = [
 export function AdminSidebar({ adminName, adminEmail }: { adminName: string; adminEmail: string }) {
   const pathname = usePathname();
   return (
-    <aside className="flex h-full flex-col border-r bg-amber-500/[0.02]">
+    <aside className="flex h-full flex-col border-r bg-admin/[0.03]">
       <div className="flex h-14 items-center gap-2 border-b px-4">
-        <div className="grid size-7 place-items-center rounded-lg bg-amber-500 text-white">
+        <div className="grid size-7 place-items-center rounded-md bg-admin text-admin-foreground">
           <ShieldIcon />
         </div>
         <div>
-          <div className="text-sm font-semibold">Reklu Admin</div>
+          <div className="font-display text-sm font-semibold">Reklu Admin</div>
           <div className="text-[10px] uppercase tracking-wider text-muted-foreground">v0.2</div>
         </div>
       </div>
@@ -51,7 +51,7 @@ export function AdminSidebar({ adminName, adminEmail }: { adminName: string; adm
               className={cn(
                 "flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm transition-colors",
                 active
-                  ? "bg-amber-500/10 font-medium text-amber-700 dark:text-amber-300"
+                  ? "bg-admin/10 font-medium text-admin"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground",
               )}
             >

@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { AdminPageShell } from "@/components/admin/page-shell";
+import { ProviderDot } from "@/components/ui/provider-badge";
 import { revalidatePath } from "next/cache";
 import { Key, Trash2, ExternalLink, ShieldCheck, AlertCircle, CheckCircle2, TestTube2 } from "lucide-react";
 import { getProviderEnvKey } from "@/lib/env";
@@ -135,15 +137,11 @@ export default async function AdminProvidersPage() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6 p-6">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Provider API keys</h1>
-        <p className="text-sm text-muted-foreground">
-          System-wide keys. All users in this deployment use these to talk to providers. Keys are
-          encrypted at rest with AES-256-GCM and never sent to the browser.
-        </p>
-      </div>
-
+    <AdminPageShell
+      title="Provider API keys"
+      subtitle="System-wide keys. All users in this deployment use these to talk to providers. Keys are encrypted at rest with AES-256-GCM and never sent to the browser."
+      maxWidth="4xl"
+    >
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-base">
@@ -166,7 +164,10 @@ export default async function AdminProvidersPage() {
           <Card key={p.id}>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle className="text-base">{p.name}</CardTitle>
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <ProviderDot providerId={p.id} />
+                  {p.name}
+                </CardTitle>
                 <div className="flex items-center gap-2">
                   {sysKey?.isValid && <Badge variant="success"><CheckCircle2 className="mr-1 size-3" /> Connected</Badge>}
                   {sysKey && !sysKey.isValid && <Badge variant="destructive"><AlertCircle className="mr-1 size-3" /> Invalid</Badge>}
@@ -269,6 +270,6 @@ export default async function AdminProvidersPage() {
         More providers ship in Phase 4 (xAI, DeepSeek, Mistral, Cohere, Moonshot, Qwen,
         Perplexity, Groq, Together, Fireworks). Adding a new provider is a single adapter file.
       </p>
-    </div>
+    </AdminPageShell>
   );
 }
