@@ -11,11 +11,13 @@ export function ProviderMark({
   letter,
   size = "md",
   className,
+  style,
 }: {
   providerId: string;
   letter: string;
   size?: "sm" | "md" | "lg";
   className?: string;
+  style?: React.CSSProperties;
 }) {
   const dims = {
     sm: "size-8 text-[13px] rounded-[9px]",
@@ -31,7 +33,7 @@ export function ProviderMark({
         dims,
         className,
       )}
-      style={{ color: providerColor(providerId) }}
+      style={{ color: providerColor(providerId), ...style }}
     >
       {letter}
     </span>

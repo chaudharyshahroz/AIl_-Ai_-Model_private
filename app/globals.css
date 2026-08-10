@@ -335,6 +335,154 @@
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Marketing demo animations.
+
+   All decorative and infinitely looping. Each element's *static* state is the
+   readable one, so the demos still make sense with animation disabled — and,
+   like the reveals above, these are time-based CSS rather than rAF-driven, so
+   a background tab catches up instead of freezing mid-sequence.
+--------------------------------------------------------------------------- */
+
+/* One item of an N-up carousel. Callers set --demo-delay per item. */
+.demo-cycle {
+  animation: demo-cycle 10s cubic-bezier(0.22, 1, 0.36, 1) infinite both;
+  animation-delay: var(--demo-delay, 0s);
+}
+@keyframes demo-cycle {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  4%,
+  20% {
+    opacity: 1;
+    transform: none;
+  }
+  24%,
+  100% {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.97);
+  }
+}
+
+/* A line of streaming output. */
+.demo-line {
+  animation: demo-line 7s ease-out infinite both;
+  animation-delay: var(--demo-delay, 0s);
+}
+@keyframes demo-line {
+  0% {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  7%,
+  86% {
+    opacity: 1;
+    transform: none;
+  }
+  93%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* A block that assembles itself into a rendered preview. */
+.demo-build {
+  animation: demo-build 7s cubic-bezier(0.22, 1, 0.36, 1) infinite both;
+  animation-delay: var(--demo-delay, 0s);
+}
+@keyframes demo-build {
+  0%,
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  10%,
+  88% {
+    opacity: 1;
+    transform: none;
+  }
+  95%,
+  100% {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+}
+
+/* Soft attention pulse for an active node. */
+.demo-pulse {
+  animation: demo-pulse 2.4s ease-in-out infinite;
+  animation-delay: var(--demo-delay, 0s);
+}
+@keyframes demo-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+/* SVG connector that draws, holds, then clears. */
+.demo-trace {
+  stroke-dasharray: 300;
+  animation: demo-trace 7s ease-in-out infinite both;
+  animation-delay: var(--demo-delay, 0s);
+}
+@keyframes demo-trace {
+  0% {
+    stroke-dashoffset: 300;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  35%,
+  86% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  95%,
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+/* Blinking composer caret. */
+.demo-caret {
+  animation: demo-caret 1.1s steps(1) infinite;
+}
+@keyframes demo-caret {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Gentle vertical drift for floating chips. */
+.demo-float {
+  animation: demo-float 5s ease-in-out infinite;
+  animation-delay: var(--demo-delay, 0s);
+}
+@keyframes demo-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal-up,
   .rail-draw {
@@ -347,6 +495,25 @@
     opacity: 1;
     transform: none;
     transition: none;
+  }
+  /* Demos hold their readable resting state instead of looping. */
+  .demo-cycle,
+  .demo-line,
+  .demo-build,
+  .demo-pulse,
+  .demo-trace,
+  .demo-caret,
+  .demo-float {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .demo-trace {
+    stroke-dashoffset: 0;
+  }
+  /* Carousel slides are stacked — show only the first so they don't overlap. */
+  .demo-cycle:not(:first-child) {
+    opacity: 0;
   }
 }
 

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { ProviderDot } from "@/components/ui/provider-badge";
 import { MarketingHeader } from "@/components/marketing/header";
 import { MarketingFooter } from "@/components/marketing/footer";
@@ -11,52 +10,32 @@ import { SectionEyebrow } from "@/components/marketing/section-eyebrow";
 import { PricingGrid } from "@/components/marketing/pricing-grid";
 import { Reveal, ScrollReveal } from "@/components/marketing/reveal";
 import { AppPreview } from "@/components/marketing/app-preview";
+import { FeatureSection } from "@/components/marketing/feature-section";
+import { RoutingDemo } from "@/components/marketing/demos/routing-demo";
+import { BuildDemo } from "@/components/marketing/demos/build-demo";
+import { CreateDemo } from "@/components/marketing/demos/create-demo";
+import { SkillsDemo } from "@/components/marketing/demos/skills-demo";
+import { ConnectDemo } from "@/components/marketing/demos/connect-demo";
 import {
   ArrowRight,
-  Check,
   Sparkles,
   Zap,
   Star,
-  FileText,
-  Presentation,
-  ImageIcon,
-  Database,
-  Shield,
+  Hammer,
+  Wand2,
+  Plug,
   MessageSquare,
-  Globe,
-  Cpu,
 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-const MODELS = [
-  { name: "GPT-4o", provider: "OpenAI", id: "openai" },
-  { name: "Claude Sonnet 4.5", provider: "Anthropic", id: "anthropic" },
-  { name: "Gemini 2.5 Pro", provider: "Google", id: "google" },
-  { name: "Grok 2", provider: "xAI", id: "xai" },
-  { name: "DeepSeek V3", provider: "DeepSeek", id: "deepseek" },
-  { name: "Kimi K2 128K", provider: "Moonshot", id: "moonshot" },
-  { name: "Mistral Large 2", provider: "Mistral", id: "mistral" },
-  { name: "Command R+", provider: "Cohere", id: "cohere" },
-  { name: "Sonar Large", provider: "Perplexity", id: "perplexity" },
-  { name: "Llama 3.3 70B", provider: "Groq", id: "groq" },
-  { name: "Qwen Max", provider: "Alibaba", id: "qwen" },
-  { name: "o3-mini", provider: "OpenAI", id: "openai" },
-];
-
-const SKILLS = [
-  { name: "Deep Research", desc: "Multi-source synthesis with citations" },
-  { name: "Code Reviewer", desc: "PR feedback grounded in your repo" },
-  { name: "Document Creator", desc: "Reports, briefs, and proposals" },
-  { name: "Data Analyst", desc: "CSV/spreadsheet insights and charts" },
-];
-
-const CREATORS = [
-  { icon: FileText, name: "Document" },
-  { icon: Presentation, name: "Presentation" },
-  { icon: ImageIcon, name: "Image" },
-  { icon: Database, name: "Spreadsheet" },
-  { icon: Cpu, name: "Code" },
+const PROVIDERS = [
+  { name: "OpenAI", id: "openai" },
+  { name: "Anthropic", id: "anthropic" },
+  { name: "Google", id: "google" },
+  { name: "xAI", id: "xai" },
+  { name: "DeepSeek", id: "deepseek" },
+  { name: "Mistral", id: "mistral" },
 ];
 
 export default async function Home() {
@@ -66,8 +45,80 @@ export default async function Home() {
       <MarketingHeader />
       <Hero />
       <SocialProof />
-      <BentoFeatures />
-      <Connect />
+      <Capabilities />
+
+      <FeatureSection
+        eyebrow="Unified chat"
+        icon={MessageSquare}
+        title={<>One chat.<br />Every model.</>}
+        body="Ask once. Reklu Auto reads the request, checks which models can actually handle it, and routes to the best fit — then tells you why it chose."
+        bullets={[
+          "Switch models mid-conversation without losing context",
+          "Compare two to four models side by side",
+          "Cost, latency, and token count on every response",
+          "Bring your own key for any provider",
+        ]}
+        demo={<RoutingDemo />}
+      />
+
+      <FeatureSection
+        eyebrow="Build"
+        icon={Hammer}
+        title={<>Describe an app.<br />Get a real one.</>}
+        body="Go from a sentence to a working website or mobile app. Reklu writes the code, renders a live preview as it goes, and lets you iterate by just saying what to change."
+        bullets={[
+          "Websites, landing pages, dashboards, and mobile screens",
+          "Live preview updates as the code streams in",
+          "Refine by conversation — no need to touch the code",
+          "Export the source or download a ready-to-host file",
+        ]}
+        demo={<BuildDemo />}
+        flip
+      />
+
+      <FeatureSection
+        eyebrow="Create"
+        icon={Wand2}
+        title={<>Documents, decks,<br />images, and data.</>}
+        body="Reklu produces real files, not just text in a chat window. Everything is editable in a side-by-side canvas and exports to the format you actually need."
+        bullets={[
+          "Documents and reports → DOCX, PDF",
+          "Presentations with real slide layouts → PPTX",
+          "Images and diagrams → PNG, SVG",
+          "Spreadsheets with working formulas → XLSX, CSV",
+        ]}
+        demo={<CreateDemo />}
+      />
+
+      <FeatureSection
+        eyebrow="Skills"
+        icon={Zap}
+        title={<>Workflows, not<br />saved prompts.</>}
+        body="A skill bundles instructions, a model policy, the tools it may use, an output format, and quality checks — so the same task runs the same way every time."
+        bullets={[
+          "Versioned and testable, with evaluation runs",
+          "Each skill picks its own model policy",
+          "Install from the catalog or write your own",
+          "Share across your whole workspace",
+        ]}
+        demo={<SkillsDemo />}
+        flip
+      />
+
+      <FeatureSection
+        eyebrow="Connect"
+        icon={Plug}
+        title={<>MCP servers,<br />plugins, and your apps.</>}
+        body="Connect any Model Context Protocol server, plus native integrations for the tools you already use. Reklu reads your context — and asks before it writes anything."
+        bullets={[
+          "Any MCP server over streamable HTTP or SSE",
+          "Native connectors: Drive, Gmail, Slack, Notion, GitHub, Linear",
+          "Per-tool approvals, one-off or recurring",
+          "Every tool call written to an audit log",
+        ]}
+        demo={<ConnectDemo />}
+      />
+
       <Testimonials />
       <Pricing />
       <FAQ />
@@ -81,7 +132,6 @@ function Hero() {
   return (
     <section className="relative -mt-16 overflow-hidden pt-16">
       <div className="absolute inset-0 grid-bg" />
-      {/* Warm glow behind the headline */}
       <div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-24 h-[420px] w-[880px] -translate-x-1/2 rounded-full opacity-[0.13] blur-[110px]"
@@ -96,8 +146,7 @@ function Hero() {
             <Reveal>
               <span className="elev-card inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-3.5 py-1.5 text-[13px] font-medium">
                 <Sparkles className="size-3.5 text-primary" />
-                Now with Reklu Auto
-                <span className="text-muted-foreground">— routing built in</span>
+                Chat, build, create — one workspace
               </span>
             </Reveal>
 
@@ -105,14 +154,15 @@ function Hero() {
               <h1 className="display-xl mt-7 text-balance text-[clamp(2.75rem,7vw,5.25rem)]">
                 Every model.
                 <br />
-                <span className="text-muted-foreground/80">Answering as one.</span>
+                <span className="text-muted-foreground/80">Every kind of work.</span>
               </h1>
             </Reveal>
 
             <Reveal delay={0.16}>
               <p className="mx-auto mt-7 max-w-xl text-balance text-[17px] leading-relaxed text-muted-foreground">
-                Stop juggling tabs for GPT, Claude, and Gemini. Reklu routes every question to
-                the right model — or lets you choose — in one connected workspace.
+                Chat with GPT, Claude, and Gemini. Build websites and apps. Create documents,
+                decks, images, and spreadsheets. Run skills and connect your tools — all in one
+                workspace.
               </p>
             </Reveal>
 
@@ -160,13 +210,13 @@ function SocialProof() {
 
         <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
           <span className="mr-1 text-sm text-muted-foreground">Connects to</span>
-          {MODELS.slice(0, 6).map((m) => (
+          {PROVIDERS.map((p) => (
             <span
-              key={m.provider + m.name}
+              key={p.id}
               className="inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-card px-3 py-1.5 text-xs font-medium"
             >
-              <ProviderDot providerId={m.id} />
-              {m.provider}
+              <ProviderDot providerId={p.id} />
+              {p.name}
             </span>
           ))}
           <span className="text-xs text-muted-foreground">+7 more</span>
@@ -176,202 +226,57 @@ function SocialProof() {
   );
 }
 
-function BentoFeatures() {
+/** Overview of the four surfaces, each linking down to its section. */
+function Capabilities() {
+  const items = [
+    {
+      icon: MessageSquare,
+      title: "Chat",
+      desc: "Every leading model, with automatic routing and transparent cost.",
+    },
+    {
+      icon: Hammer,
+      title: "Build",
+      desc: "Websites and mobile apps from a prompt, with a live preview.",
+    },
+    {
+      icon: Wand2,
+      title: "Create",
+      desc: "Docs, decks, images, and spreadsheets you can actually export.",
+    },
+    {
+      icon: Plug,
+      title: "Connect",
+      desc: "Skills, MCP servers, and plugins wired into your own tools.",
+    },
+  ];
+
   return (
-    <section className="py-24 sm:py-28">
+    <section className="py-20 sm:py-24">
       <div className="mx-auto max-w-6xl px-6">
-        <ScrollReveal className="mx-auto mb-14 max-w-2xl text-center">
+        <ScrollReveal className="mx-auto mb-12 max-w-2xl text-center">
           <SectionEyebrow icon={Sparkles} label="One workspace" center />
           <h2 className="display-lg text-[clamp(2rem,4vw,2.85rem)]">
-            Everything, without the tab-switching
+            Four surfaces, one subscription
           </h2>
           <p className="mt-4 text-[17px] text-muted-foreground">
-            Chat, models, skills, and output — in one place, with the cost of every answer
-            shown up front.
+            Most teams pay for four tools to do this. Reklu puts them behind one login and one
+            bill.
           </p>
         </ScrollReveal>
 
-        <div className="grid gap-4 lg:grid-cols-3 lg:[grid-template-areas:'chat_chat_models'_'chat_chat_skills']">
-          <ScrollReveal className="lg:[grid-area:chat]">
-            <div className="elev-card h-full rounded-2xl border border-border/70 bg-card p-7">
-              <SectionEyebrow icon={MessageSquare} label="Unified chat" />
-              <h3 className="display-md text-2xl">
-                One chat. Every model.
-                <br />
-                Switch mid-conversation.
-              </h3>
-              <p className="mt-3 text-[15px] text-muted-foreground">
-                Let Reklu Auto pick, or choose yourself. Compare models side by side with
-                transparent cost and latency on every response.
-              </p>
-
-              <div className="mt-7 space-y-2.5">
-                <div className="elev-card rounded-xl rounded-tl-sm border border-border/60 bg-background p-4">
-                  <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-                    <ProviderDot providerId="openai" /> GPT-4o
-                  </div>
-                  <p className="mt-1.5 text-sm">
-                    Sure — here's a function that reads a CSV in TypeScript…
-                  </p>
-                </div>
-                <div className="elev-lift rounded-xl rounded-tl-sm border border-primary/20 bg-card p-4">
-                  <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-                    <ProviderDot providerId="anthropic" /> Switched to Claude Sonnet 4.5
-                  </div>
-                  <p className="mt-1.5 text-sm">
-                    I can do that, plus a type-safe parser. Want error handling for malformed
-                    rows?
-                  </p>
-                </div>
-              </div>
-
-              <ul className="mt-7 grid gap-2.5 sm:grid-cols-2">
-                {[
-                  "Auto explains its pick",
-                  "Cost, latency, tokens shown",
-                  "Branching conversations",
-                  "Full-text search",
-                ].map((b) => (
-                  <li key={b} className="flex items-start gap-2 text-sm text-muted-foreground">
-                    <Check className="mt-0.5 size-4 shrink-0 text-primary" />
-                    {b}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.06} className="lg:[grid-area:models]">
-            <div className="elev-card h-full rounded-2xl border border-border/70 bg-card p-7">
-              <SectionEyebrow icon={Globe} label="Providers" />
-              <h3 className="display-md text-xl">All the leading models</h3>
-              <p className="mt-2.5 text-sm text-muted-foreground">
-                Direct official APIs. No reseller, no markup on list price.
-              </p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {MODELS.slice(0, 7).map((m, i) => (
-                  <span
-                    key={`${m.name}-${i}`}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-background px-2.5 py-1.5 text-xs font-medium"
-                  >
-                    <ProviderDot providerId={m.id} />
-                    {m.name}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.12} className="lg:[grid-area:skills]">
-            <div className="elev-card h-full rounded-2xl border border-border/70 bg-card p-7">
-              <SectionEyebrow icon={Zap} label="Skills" />
-              <h3 className="display-md text-xl">Complete AI workflows</h3>
-              <p className="mt-2.5 text-sm text-muted-foreground">
-                Instructions, model policy, tools, and quality checks — not a prompt library.
-              </p>
-              <div className="mt-5 space-y-2">
-                {SKILLS.map((s) => (
-                  <div
-                    key={s.name}
-                    className="rounded-lg border border-border/70 bg-background px-3 py-2"
-                  >
-                    <div className="text-sm font-medium">{s.name}</div>
-                    <div className="text-xs text-muted-foreground">{s.desc}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </ScrollReveal>
-        </div>
-
-        <ScrollReveal delay={0.1} className="mt-4">
-          <div className="elev-card flex flex-wrap items-center justify-between gap-6 rounded-2xl border border-border/70 bg-card p-7">
-            <div>
-              <SectionEyebrow icon={FileText} label="Create" />
-              <h3 className="display-md text-xl">Real artifacts, not just text</h3>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Generate, edit, and export — from chat or a dedicated canvas.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2.5">
-              {CREATORS.map(({ icon: Icon, name }) => (
-                <span
-                  key={name}
-                  className="elev-card inline-flex items-center gap-2 rounded-xl border border-border/70 bg-background px-3.5 py-2.5 text-sm font-medium"
-                >
-                  <Icon className="size-4 text-primary" />
-                  {name}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {items.map((it, i) => (
+            <ScrollReveal key={it.title} delay={i * 0.06}>
+              <div className="elev-card-hover h-full rounded-2xl border border-border/70 bg-card p-6">
+                <span className="grid size-10 place-items-center rounded-xl bg-primary/10">
+                  <it.icon className="size-5 text-primary" />
                 </span>
-              ))}
-            </div>
-          </div>
-        </ScrollReveal>
-      </div>
-    </section>
-  );
-}
-
-function Connect() {
-  return (
-    <section className="border-t border-border/60 py-24 sm:py-28">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="grid items-center gap-14 lg:grid-cols-2">
-          <ScrollReveal>
-            <SectionEyebrow icon={Globe} label="Connect" />
-            <h2 className="display-lg text-[clamp(1.9rem,3.5vw,2.6rem)]">
-              Connect AI to the tools you already use
-            </h2>
-            <p className="mt-4 text-[17px] text-muted-foreground">
-              Native connectors for the apps you live in. Reklu reads your context and acts on
-              your behalf — with explicit approval before every write.
-            </p>
-            <div className="mt-7 grid grid-cols-2 gap-2 sm:grid-cols-3">
-              {[
-                "Google Drive",
-                "Gmail",
-                "Calendar",
-                "Slack",
-                "Notion",
-                "GitHub",
-                "OneDrive",
-                "Outlook",
-                "Linear",
-              ].map((c) => (
-                <div
-                  key={c}
-                  className="rounded-lg border border-border/70 bg-card px-3 py-2.5 text-sm text-muted-foreground"
-                >
-                  {c}
-                </div>
-              ))}
-            </div>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.1}>
-            <div className="elev-float rounded-2xl border border-border/70 bg-card p-6">
-              <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-                <Shield className="size-3.5 text-primary" /> Permission requested
+                <h3 className="display-md mt-4 text-lg">{it.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{it.desc}</p>
               </div>
-              <div className="mt-4 rounded-xl border border-border/70 bg-background p-4">
-                <div className="text-sm font-semibold">Send email to team@acme.com</div>
-                <div className="mt-1 text-xs text-muted-foreground">
-                  Subject: Q3 GTM plan draft for review
-                </div>
-                <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-                  Hi team — I've drafted the Q3 GTM plan for the new visibility product. It
-                  covers the ICP, three core plays, and a 30-day pulse measurement…
-                </p>
-              </div>
-              <div className="mt-4 flex gap-2.5">
-                <Button size="sm" className="flex-1">
-                  Approve
-                </Button>
-                <Button size="sm" variant="outline" className="flex-1">
-                  Reject
-                </Button>
-              </div>
-            </div>
-          </ScrollReveal>
+            </ScrollReveal>
+          ))}
         </div>
       </div>
     </section>
@@ -392,9 +297,9 @@ function Testimonials() {
       metric: "4 → 1",
       metricLabel: "tools consolidated",
       quote:
-        "The model comparison alone justified it. Our writers pick the model that fits the brief instead of defaulting to whatever tab was open.",
+        "Our team ships internal dashboards straight from chat now. The thing that used to be a two-week ticket is an afternoon.",
       name: "Priya N.",
-      role: "Content Lead",
+      role: "Product Lead",
     },
   ];
 
@@ -416,7 +321,7 @@ function Testimonials() {
                   <span className="display-lg text-4xl text-primary">{t.metric}</span>
                   <span className="text-sm text-muted-foreground">{t.metricLabel}</span>
                 </div>
-                <p className="mt-6 flex-1 text-[15px] leading-relaxed">"{t.quote}"</p>
+                <p className="mt-6 flex-1 text-[15px] leading-relaxed">&ldquo;{t.quote}&rdquo;</p>
                 <div className="mt-6 flex items-center gap-3 border-t border-border/70 pt-5">
                   <span className="grid size-9 place-items-center rounded-full bg-muted text-xs font-semibold">
                     {t.name.slice(0, 1)}
@@ -462,20 +367,28 @@ function Pricing() {
 function FAQ() {
   const items = [
     {
+      q: "What can Reklu actually build?",
+      a: "Websites, landing pages, dashboards, and mobile app screens. You describe what you want, Reklu writes the code and renders a live preview you can iterate on by conversation. Export the source or download a ready-to-host file.",
+    },
+    {
       q: "How does Reklu connect to AI providers?",
-      a: "We use direct official APIs from OpenAI, Anthropic, Google, and others. We never route through resellers or mark up list price — what you see is what the provider charges.",
+      a: "Direct official APIs from OpenAI, Anthropic, Google, and others. We never route through resellers or mark up list price — what you see is what the provider charges.",
     },
     {
       q: "Can I bring my own API key?",
-      a: "Yes. Add your own key in Settings → Providers and Reklu will use it. Keys are encrypted at rest and never exposed to your browser.",
+      a: "Yes. Add your own key in Settings → Providers and Reklu will use it. Keys are encrypted at rest with AES-256-GCM and never exposed to your browser.",
     },
     {
       q: "How does Reklu Auto decide which model to use?",
-      a: "It looks at your message, the capabilities required (vision, tools, reasoning), and your quality/speed/cost preference — then picks the best available model and shows you why.",
+      a: "It looks at your message, the capabilities required (vision, tools, reasoning, context length), and your quality/speed/cost preference — then picks the best available model and shows you why.",
     },
     {
       q: "What is a skill?",
-      a: "A versioned AI workflow: instructions, model policy, allowed tools, output format, and quality checks. Skills are not saved prompts — they are real, testable workflows.",
+      a: "A versioned AI workflow: instructions, model policy, allowed tools, output format, and quality checks. Skills are not saved prompts — they are real, testable workflows you can evaluate and share.",
+    },
+    {
+      q: "Which MCP servers and plugins are supported?",
+      a: "Any Model Context Protocol server over streamable HTTP or SSE. Alongside that there are native connectors for Google Drive, Gmail, Calendar, Slack, Notion, GitHub, Linear, and more. Every tool call that writes requires explicit approval.",
     },
     {
       q: "Is my data private?",
@@ -491,7 +404,7 @@ function FAQ() {
         </ScrollReveal>
         <div className="space-y-3">
           {items.map((it, i) => (
-            <ScrollReveal key={it.q} delay={Math.min(i * 0.05, 0.2)}>
+            <ScrollReveal key={it.q} delay={Math.min(i * 0.04, 0.2)}>
               <div className="elev-card rounded-xl border border-border/70 bg-card p-6">
                 <h3 className="font-display text-[17px] font-semibold tracking-tight">{it.q}</h3>
                 <p className="mt-2.5 text-[15px] leading-relaxed text-muted-foreground">{it.a}</p>
@@ -522,14 +435,16 @@ function FinalCTA() {
                   providerId={id}
                   letter={["O", "A", "G", "X"][i]}
                   size="sm"
+                  className="demo-float"
+                  style={{ "--demo-delay": `${i * 0.25}s` } as React.CSSProperties}
                 />
               ))}
             </div>
             <h2 className="display-lg text-balance text-[clamp(2rem,4.5vw,3.25rem)]">
-              Ready to try every leading model?
+              One workspace for all of it
             </h2>
             <p className="mx-auto mt-5 max-w-lg text-[17px] text-background/70">
-              Open Reklu, start a chat, and let the workspace handle the rest.
+              Chat, build, create, and connect — without paying for four tools to do it.
             </p>
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Button asChild size="xl" className="w-full sm:w-auto">
