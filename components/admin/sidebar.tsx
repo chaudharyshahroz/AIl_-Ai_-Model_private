@@ -39,7 +39,7 @@ export function AdminSidebar({ adminName, adminEmail }: { adminName: string; adm
   return (
     <aside className="admin-sidebar flex h-full shrink-0 flex-col overflow-hidden border-r bg-admin/[0.03]">
       <div className="flex h-14 items-center gap-2 border-b px-4">
-        <div className="grid size-7 shrink-0 place-items-center rounded bg-admin text-admin-foreground">
+        <div className="grid size-7 shrink-0 place-items-center rounded-lg bg-admin text-admin-foreground">
           <ShieldIcon />
         </div>
         <div className="nav-label min-w-0 flex-1">
@@ -49,7 +49,7 @@ export function AdminSidebar({ adminName, adminEmail }: { adminName: string; adm
         <button
           onClick={toggleAdminSidebar}
           aria-label="Toggle sidebar"
-          className="nav-label shrink-0 rounded p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+          className="nav-label shrink-0 rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
         >
           <PanelLeft className="size-4" />
         </button>
@@ -62,7 +62,7 @@ export function AdminSidebar({ adminName, adminEmail }: { adminName: string; adm
               key={item.href}
               href={item.href}
               className={cn(
-                "relative flex items-center gap-2.5 rounded px-2.5 py-1.5 text-sm transition-colors",
+                "relative flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-sm transition-colors",
                 active
                   ? "bg-admin/10 font-medium text-admin"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -76,7 +76,7 @@ export function AdminSidebar({ adminName, adminEmail }: { adminName: string; adm
         })}
       </nav>
       <div className="nav-label border-t p-3">
-        <div className="truncate rounded bg-muted/50 p-2.5 text-xs">
+        <div className="truncate rounded-lg bg-muted/50 p-2.5 text-xs">
           <div className="truncate font-medium">{adminName}</div>
           <div className="truncate text-muted-foreground">{adminEmail}</div>
         </div>

@@ -4,43 +4,43 @@
 
 @layer base {
   :root {
-    /* Light theme — true neutral, no warm tint (v2) */
-    --background: 0 0% 98%;
-    --foreground: 0 0% 9%;
+    /* Light theme — warm cream paper with elevated white cards (v3) */
+    --background: 30 20% 98%;        /* #FBFAF9 */
+    --foreground: 285 8% 10%;        /* #1B181C — warm near-black */
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 9%;
+    --card-foreground: 285 8% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 9%;
+    --popover-foreground: 285 8% 10%;
 
-    --primary: 211 100% 50%;         /* signal blue */
+    --primary: 14 93% 63%;           /* #F96F4B — warm coral */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 94%;
-    --secondary-foreground: 0 0% 12%;
+    --secondary: 30 12% 95%;
+    --secondary-foreground: 285 8% 14%;
 
-    --muted: 0 0% 94%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 30 12% 95%;
+    --muted-foreground: 285 4% 44%;
 
-    --accent: 211 100% 96%;
-    --accent-foreground: 211 90% 35%;
+    --accent: 14 90% 96%;
+    --accent-foreground: 14 70% 40%;
 
-    --destructive: 0 72% 48%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 150 55% 34%;
+    --success: 152 52% 36%;
     --success-foreground: 0 0% 100%;
 
-    --warning: 38 92% 46%;
+    --warning: 34 92% 48%;
     --warning-foreground: 0 0% 100%;
 
-    --border: 0 0% 88%;
-    --input: 0 0% 88%;
-    --ring: 211 100% 50%;
+    --border: 30 10% 90%;
+    --input: 30 10% 88%;
+    --ring: 14 93% 63%;
 
-    --admin-accent: 38 95% 45%;      /* signal amber — distinct from app's signal blue */
+    --admin-accent: 262 60% 52%;     /* violet — clearly distinct from the app's coral */
     --admin-accent-foreground: 0 0% 100%;
 
-    --radius: 0.25rem;               /* sharper, more technical than v1's 0.5rem */
+    --radius: 0.75rem;               /* 12px — soft, matching the reference's shape language */
 
     /* Provider spectrum — identity accents, used only for small dots/chips */
     --provider-openai: 158 64% 42%;
@@ -73,40 +73,40 @@
   }
 
   .dark {
-    --background: 0 0% 6%;
-    --foreground: 0 0% 96%;
-    --card: 0 0% 9%;
-    --card-foreground: 0 0% 96%;
-    --popover: 0 0% 9%;
-    --popover-foreground: 0 0% 96%;
+    --background: 285 8% 7%;         /* warm ink, matches the light theme's temperature */
+    --foreground: 30 15% 96%;
+    --card: 285 7% 11%;
+    --card-foreground: 30 15% 96%;
+    --popover: 285 7% 11%;
+    --popover-foreground: 30 15% 96%;
 
-    --primary: 211 100% 60%;
+    --primary: 14 93% 63%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 14%;
-    --secondary-foreground: 0 0% 96%;
+    --secondary: 285 6% 16%;
+    --secondary-foreground: 30 15% 96%;
 
-    --muted: 0 0% 14%;
-    --muted-foreground: 0 0% 62%;
+    --muted: 285 6% 16%;
+    --muted-foreground: 30 6% 64%;
 
-    --accent: 211 60% 18%;
-    --accent-foreground: 211 90% 75%;
+    --accent: 14 40% 20%;
+    --accent-foreground: 14 90% 76%;
 
-    --destructive: 6 70% 58%;
+    --destructive: 0 70% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 150 45% 50%;
-    --success-foreground: 0 0% 6%;
+    --success: 152 45% 52%;
+    --success-foreground: 285 8% 7%;
 
-    --warning: 38 90% 58%;
-    --warning-foreground: 0 0% 6%;
+    --warning: 34 90% 60%;
+    --warning-foreground: 285 8% 7%;
 
-    --border: 0 0% 18%;
-    --input: 0 0% 18%;
-    --ring: 211 100% 60%;
+    --border: 285 6% 20%;
+    --input: 285 6% 22%;
+    --ring: 14 93% 63%;
 
-    --admin-accent: 38 95% 58%;
-    --admin-accent-foreground: 0 0% 6%;
+    --admin-accent: 262 70% 68%;
+    --admin-accent-foreground: 285 8% 7%;
 
     --provider-openai: 158 60% 55%;
     --provider-anthropic: 14 75% 62%;
@@ -114,6 +114,39 @@
     --provider-xai: 262 70% 70%;
     --provider-deepseek: 189 75% 55%;
     --provider-mistral: 32 95% 60%;
+  }
+
+  :root {
+    /* Elevation — layered, soft, warm-tinted. Real depth instead of 1px borders. */
+    --shadow-card:
+      0 1px 2px -1px hsl(285 10% 20% / 0.06),
+      0 2px 6px -2px hsl(285 10% 20% / 0.06),
+      0 -1px 1px -0.5px hsl(285 10% 20% / 0.04) inset;
+    --shadow-lift:
+      0 2px 4px -2px hsl(285 10% 20% / 0.08),
+      0 8px 16px -6px hsl(285 10% 20% / 0.10),
+      0 -1px 1px -0.5px hsl(285 10% 20% / 0.05) inset;
+    --shadow-float:
+      0 4px 8px -4px hsl(285 10% 20% / 0.10),
+      0 16px 40px -8px hsl(285 10% 20% / 0.16),
+      0 -1px 1px -0.5px hsl(285 10% 20% / 0.06) inset;
+    --shadow-accent: 0 8px 24px -6px hsl(var(--primary) / 0.45);
+  }
+
+  .dark {
+    --shadow-card:
+      0 1px 2px -1px hsl(0 0% 0% / 0.5),
+      0 2px 6px -2px hsl(0 0% 0% / 0.4),
+      0 1px 0 0 hsl(30 15% 96% / 0.04) inset;
+    --shadow-lift:
+      0 2px 4px -2px hsl(0 0% 0% / 0.5),
+      0 8px 16px -6px hsl(0 0% 0% / 0.5),
+      0 1px 0 0 hsl(30 15% 96% / 0.05) inset;
+    --shadow-float:
+      0 4px 8px -4px hsl(0 0% 0% / 0.5),
+      0 16px 40px -8px hsl(0 0% 0% / 0.6),
+      0 1px 0 0 hsl(30 15% 96% / 0.06) inset;
+    --shadow-accent: 0 8px 24px -6px hsl(var(--primary) / 0.4);
   }
 
   * {
@@ -140,6 +173,83 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Elevation utilities — use these instead of bare 1px borders for anything
+     that should read as a surface sitting above the page. */
+  .elev-card {
+    box-shadow: var(--shadow-card);
+  }
+  .elev-lift {
+    box-shadow: var(--shadow-lift);
+  }
+  .elev-float {
+    box-shadow: var(--shadow-float);
+  }
+  .elev-accent {
+    box-shadow: var(--shadow-accent);
+  }
+  .elev-card-hover {
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+  }
+  .elev-card-hover:hover {
+    box-shadow: var(--shadow-lift);
+    transform: translateY(-2px);
+  }
+
+  /* Display type — large, geometric, set very tight. The tracking is the
+     point; at hero sizes normal tracking reads generic. */
+  .display-xl {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+  }
+  .display-lg {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+  }
+  .display-md {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  /* Asymmetric card corner — a small signature shape detail. */
+  .corner-notch {
+    border-radius: 1.5rem 0 1.5rem 1.5rem;
+  }
+
+  /* Load-time entrance. Deliberately CSS rather than JS: CSS animations are
+     time-based, so a page opened in a background tab has already finished
+     animating by the time it's looked at. A rAF-driven library would leave
+     this content stuck at opacity 0 until the tab gets focus. */
+  .reveal-up {
+    animation: reveal-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Scroll-triggered reveal — IntersectionObserver adds .is-visible. */
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .scroll-reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Constellation rails draw themselves in. Same time-based reasoning. */
+  .rail-draw {
+    stroke-dasharray: 1200;
+    stroke-dashoffset: 1200;
+    animation: rail-draw 1.3s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .scrollbar-thin {
@@ -202,6 +312,41 @@
     background-image: var(--spectrum-gradient-v);
     background-size: 100% 200%;
     animation: spectrum-pan-v 3s linear infinite;
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes rail-draw {
+  from {
+    stroke-dashoffset: 1200;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-up,
+  .rail-draw {
+    animation: none;
+  }
+  .rail-draw {
+    stroke-dashoffset: 0;
+  }
+  .scroll-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
 

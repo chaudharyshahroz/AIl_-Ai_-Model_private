@@ -1,20 +1,27 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Inter, Outfit, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
 
-const plexSans = IBM_Plex_Sans({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
   display: "swap",
 });
 
-const plexMono = IBM_Plex_Mono({
+/** Display face — geometric, set very tight at large sizes (see .display-xl). */
+const outfit = Outfit({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
   variable: "--font-mono",
   display: "swap",
 });
@@ -83,11 +90,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             `,
           }}
         />
-        <meta name="theme-color" content="#0f0f0f" media="(prefers-color-scheme: dark)" />
-        <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#131114" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#fbfaf9" media="(prefers-color-scheme: light)" />
+        {/* Scroll reveals start hidden and are shown by IntersectionObserver.
+            Without JS there's nothing to reveal them, so show them outright. */}
+        <noscript>
+          {/* eslint-disable-next-line react/no-danger */}
+          <style
+            dangerouslySetInnerHTML={{
+              __html: ".scroll-reveal{opacity:1 !important;transform:none !important}",
+            }}
+          />
+        </noscript>
       </head>
       <body
-        className={`${plexSans.variable} ${plexMono.variable} antialiased`}
+        className={`${inter.variable} ${outfit.variable} ${jetbrains.variable} antialiased`}
         suppressHydrationWarning
       >
         <ThemeProvider

@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-/** Small label + icon used above a section heading. Replaces the pill-badge eyebrow pattern. */
+/** Small accent label above a section heading. */
 export function SectionEyebrow({
   icon: Icon,
   label,
@@ -12,9 +12,11 @@ export function SectionEyebrow({
   center?: boolean;
 }) {
   return (
-    <div className={cn("mb-4 flex items-center gap-2 text-primary", center && "justify-center")}>
-      <Icon className="size-3.5" />
-      <span className="text-xs font-semibold uppercase tracking-[0.14em]">{label}</span>
+    <div className={cn("mb-4 flex", center && "justify-center")}>
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">
+        <Icon className="size-3" />
+        {label}
+      </span>
     </div>
   );
 }

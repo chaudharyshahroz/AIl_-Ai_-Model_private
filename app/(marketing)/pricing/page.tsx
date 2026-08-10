@@ -10,7 +10,7 @@ export default function PricingPage() {
     <div className="min-h-screen">
       <MarketingHeader />
       <section className="mx-auto max-w-5xl px-6 py-20 text-center">
-        <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">
+        <h1 className="display-lg text-4xl sm:text-5xl">
           Simple, transparent pricing
         </h1>
         <SpectrumRule className="mx-auto mt-6 w-16" />

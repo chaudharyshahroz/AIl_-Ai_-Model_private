@@ -72,17 +72,15 @@ const config: Config = {
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-        xs: "calc(var(--radius) - 6px)",
+        xl: "calc(var(--radius) + 8px)",  /* 20px — large cards */
+        lg: "var(--radius)",              /* 12px — default surface */
+        md: "calc(var(--radius) - 3px)",  /* 9px  — buttons, inputs */
+        sm: "calc(var(--radius) - 5px)",  /* 7px  — chips, small controls */
+        xs: "calc(var(--radius) - 7px)",
       },
       fontFamily: {
-        // v2 uses one technical family (IBM Plex Sans) for both display and
-        // body — `font-display` is kept as an alias (same family, existing
-        // call sites differentiate with weight/tracking, not a separate face).
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
-        display: ["var(--font-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "var(--font-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
       keyframes: {

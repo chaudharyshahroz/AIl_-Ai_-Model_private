@@ -1,20 +1,22 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { SpectrumRule } from "@/components/ui/spectrum-rule";
 import { ProviderDot } from "@/components/ui/provider-badge";
 import { MarketingHeader } from "@/components/marketing/header";
 import { MarketingFooter } from "@/components/marketing/footer";
+import { AnnouncementBar } from "@/components/marketing/announcement-bar";
+import { HeroConstellation } from "@/components/marketing/hero-constellation";
+import { ProviderMark } from "@/components/marketing/provider-mark";
 import { SectionEyebrow } from "@/components/marketing/section-eyebrow";
 import { PricingGrid } from "@/components/marketing/pricing-grid";
 import { Reveal, ScrollReveal } from "@/components/marketing/reveal";
+import { AppPreview } from "@/components/marketing/app-preview";
 import {
   ArrowRight,
   Check,
   Sparkles,
   Zap,
-  Cpu,
+  Star,
   FileText,
   Presentation,
   ImageIcon,
@@ -22,6 +24,7 @@ import {
   Shield,
   MessageSquare,
   Globe,
+  Cpu,
 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -46,25 +49,26 @@ const SKILLS = [
   { name: "Code Reviewer", desc: "PR feedback grounded in your repo" },
   { name: "Document Creator", desc: "Reports, briefs, and proposals" },
   { name: "Data Analyst", desc: "CSV/spreadsheet insights and charts" },
-  { name: "Presentation Designer", desc: "Polished slide decks" },
-  { name: "Meeting Notes", desc: "Summaries, action items, owners" },
 ];
 
 const CREATORS = [
-  { icon: FileText, name: "Document", desc: "Reports, briefs, contracts" },
-  { icon: Presentation, name: "Presentation", desc: "Polished slide decks" },
-  { icon: ImageIcon, name: "Image", desc: "Generate and edit visuals" },
-  { icon: Database, name: "Spreadsheet", desc: "Data, charts, forecasts" },
-  { icon: Cpu, name: "Code", desc: "Generate, run, explain" },
+  { icon: FileText, name: "Document" },
+  { icon: Presentation, name: "Presentation" },
+  { icon: ImageIcon, name: "Image" },
+  { icon: Database, name: "Spreadsheet" },
+  { icon: Cpu, name: "Code" },
 ];
 
 export default async function Home() {
   return (
     <div className="min-h-screen bg-background">
+      <AnnouncementBar />
       <MarketingHeader />
       <Hero />
+      <SocialProof />
       <BentoFeatures />
       <Connect />
+      <Testimonials />
       <Pricing />
       <FAQ />
       <FinalCTA />
@@ -75,223 +79,227 @@ export default async function Home() {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative -mt-16 overflow-hidden pt-16">
       <div className="absolute inset-0 grid-bg" />
-      <div className="relative mx-auto max-w-[100rem] px-6 pb-8 pt-16 sm:pt-24">
-        <Reveal>
-          <div className="mb-8 flex items-center gap-2.5">
-            <Sparkles className="size-3.5 text-primary" />
-            <span className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-              Now with Reklu Auto
-            </span>
+      {/* Warm glow behind the headline */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-24 h-[420px] w-[880px] -translate-x-1/2 rounded-full opacity-[0.13] blur-[110px]"
+        style={{ background: "hsl(var(--primary))" }}
+      />
+
+      <div className="relative mx-auto max-w-6xl px-6 pb-16 pt-20 sm:pt-28">
+        <div className="relative">
+          <HeroConstellation />
+
+          <div className="relative mx-auto max-w-3xl text-center">
+            <Reveal>
+              <span className="elev-card inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-3.5 py-1.5 text-[13px] font-medium">
+                <Sparkles className="size-3.5 text-primary" />
+                Now with Reklu Auto
+                <span className="text-muted-foreground">— routing built in</span>
+              </span>
+            </Reveal>
+
+            <Reveal delay={0.08}>
+              <h1 className="display-xl mt-7 text-balance text-[clamp(2.75rem,7vw,5.25rem)]">
+                Every model.
+                <br />
+                <span className="text-muted-foreground/80">Answering as one.</span>
+              </h1>
+            </Reveal>
+
+            <Reveal delay={0.16}>
+              <p className="mx-auto mt-7 max-w-xl text-balance text-[17px] leading-relaxed text-muted-foreground">
+                Stop juggling tabs for GPT, Claude, and Gemini. Reklu routes every question to
+                the right model — or lets you choose — in one connected workspace.
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.24}>
+              <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <Button asChild size="xl" className="w-full sm:w-auto">
+                  <Link href="/sign-up">
+                    Start 7-day free trial <ArrowRight />
+                  </Link>
+                </Button>
+                <Button asChild size="xl" variant="ink" className="w-full sm:w-auto">
+                  <Link href="/features">See how it works</Link>
+                </Button>
+              </div>
+              <p className="mt-5 text-[13px] text-muted-foreground">
+                No credit card required · Free tier available · Bring your own key
+              </p>
+            </Reveal>
           </div>
-        </Reveal>
-        <Reveal delay={0.08}>
-          <h1 className="max-w-5xl text-balance font-display text-[clamp(2.75rem,8vw,6.5rem)] font-semibold leading-[0.95] tracking-tight">
-            Every model.
-            <br />
-            Answering as one.
-          </h1>
-          <SpectrumRule className="mt-8 w-20" />
-        </Reveal>
-        <Reveal delay={0.16}>
-          <p className="mt-8 max-w-lg text-balance text-lg text-muted-foreground">
-            Stop juggling tabs for GPT, Claude, and Gemini. Reklu routes every question to the
-            right model — or lets you choose — with one connected workspace for chat, files,
-            skills, and the tools you already use.
-          </p>
-        </Reveal>
-        <Reveal delay={0.24}>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Button asChild size="xl">
-              <Link href="/sign-up">
-                Start using Reklu <ArrowRight />
-              </Link>
-            </Button>
-            <Button asChild size="xl" variant="outline">
-              <Link href="/features">See how it works</Link>
-            </Button>
-          </div>
-          <p className="mt-5 text-sm text-muted-foreground">
-            No credit card. Free tier available. BYOK supported.
-          </p>
+        </div>
+
+        <Reveal delay={0.3} className="mt-16 sm:mt-20">
+          <AppPreview />
         </Reveal>
       </div>
-      {/* Asymmetric: the demo panel breaks out of the text column instead of sitting in a clean 2-col split */}
-      <Reveal delay={0.2} className="relative z-10 mt-10 px-6 pb-20 lg:mt-[-7rem] lg:flex lg:justify-end lg:px-16 lg:pb-28">
-        <DemoCard />
-      </Reveal>
     </section>
   );
 }
 
-function DemoCard() {
+function SocialProof() {
   return (
-    <div className="relative w-full max-w-md">
-      <div className="spectrum-rule-animated absolute -top-px left-4 right-4 rounded-full" />
-      <div className="overflow-hidden rounded-lg border bg-card shadow-xl">
-        <div className="flex items-center gap-2 border-b bg-muted/40 px-4 py-2.5 text-xs text-muted-foreground">
-          <span className="font-mono">reklu.app/app/chat</span>
-        </div>
-        <div className="space-y-4 p-5">
-          <div className="flex items-start gap-2.5">
-            <div className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-muted text-[10px] font-medium text-muted-foreground">
-              You
-            </div>
-            <p className="text-sm text-foreground">
-              Draft a Q3 GTM plan for a tool that tracks brand visibility across ChatGPT, Claude,
-              and Perplexity.
-            </p>
+    <section className="border-y border-border/60 bg-card/40 py-10">
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-6 lg:flex-row lg:justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Star key={i} className="size-4 fill-primary text-primary" />
+            ))}
           </div>
-          <div className="flex items-start gap-2.5">
-            <div className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-foreground text-background">
-              <Sparkles className="size-3" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="mb-1.5 flex items-center gap-1.5 text-xs text-muted-foreground">
-                <span className="font-medium text-primary">Reklu Auto</span>
-                <ProviderDot providerId="anthropic" />
-                <span>Claude Sonnet 4.5 · strong reasoning</span>
-              </div>
-              <ul className="space-y-1.5 text-sm">
-                <li className="flex gap-2">
-                  <span className="text-muted-foreground">1.</span>
-                  <span>Define the ICP: AI-native teams shipping to technical buyers</span>
-                </li>
-                <li className="flex gap-2">
-                  <span className="text-muted-foreground">2.</span>
-                  <span>Anchor on prompt monitoring, citation velocity, share-of-answer</span>
-                </li>
-                <li className="flex gap-2">
-                  <span className="text-muted-foreground">3.</span>
-                  <span>Run a 30-day pulse across 50 priority prompts per launch</span>
-                </li>
-              </ul>
-            </div>
-          </div>
+          <span className="text-sm">
+            <span className="font-semibold">4.9</span>
+            <span className="ml-1.5 text-muted-foreground">from 2,000+ teams</span>
+          </span>
         </div>
-        <div className="flex items-center gap-2 border-t bg-muted/20 px-5 py-3 text-xs text-muted-foreground">
-          <Badge variant="success" className="gap-1">
-            <Check className="size-3" /> 124ms
-          </Badge>
-          <span>·</span>
-          <span>2,148 tokens</span>
-          <span>·</span>
-          <span>$0.013</span>
+
+        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
+          <span className="mr-1 text-sm text-muted-foreground">Connects to</span>
+          {MODELS.slice(0, 6).map((m) => (
+            <span
+              key={m.provider + m.name}
+              className="inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-card px-3 py-1.5 text-xs font-medium"
+            >
+              <ProviderDot providerId={m.id} />
+              {m.provider}
+            </span>
+          ))}
+          <span className="text-xs text-muted-foreground">+7 more</span>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
-/** Consolidates what was four near-identical stacked sections (Models, Unified
- * Chat, Skills, Create) into one denser bento grid — fewer, richer sections
- * instead of five alternating full-width bands. */
 function BentoFeatures() {
   return (
-    <section className="border-t py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <ScrollReveal className="mb-10 max-w-2xl">
-          <SectionEyebrow icon={Sparkles} label="One workspace" />
-          <h2 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-            Chat, models, skills, and output — together
+    <section className="py-24 sm:py-28">
+      <div className="mx-auto max-w-6xl px-6">
+        <ScrollReveal className="mx-auto mb-14 max-w-2xl text-center">
+          <SectionEyebrow icon={Sparkles} label="One workspace" center />
+          <h2 className="display-lg text-[clamp(2rem,4vw,2.85rem)]">
+            Everything, without the tab-switching
           </h2>
+          <p className="mt-4 text-[17px] text-muted-foreground">
+            Chat, models, skills, and output — in one place, with the cost of every answer
+            shown up front.
+          </p>
         </ScrollReveal>
 
-        <div className="grid gap-3 lg:grid-cols-3 lg:[grid-template-areas:'chat_chat_models'_'chat_chat_skills']">
-          <ScrollReveal className="rounded-lg border bg-card p-6 shadow-sm lg:[grid-area:chat]">
-            <SectionEyebrow icon={MessageSquare} label="Unified chat" />
-            <h3 className="font-display text-xl font-semibold tracking-tight">
-              One chat. Every model. Switch mid-conversation.
-            </h3>
-            <p className="mt-3 text-sm text-muted-foreground">
-              Let Reklu Auto pick the best model, or switch manually. Compare 2-4 models side by
-              side with transparent cost and latency.
-            </p>
-            <div className="mt-6 space-y-3 text-sm">
-              <div className="rounded-md bg-muted/50 p-3">
-                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <ProviderDot providerId="openai" /> GPT-4o
-                </div>
-                <div className="mt-1">Sure, here's a function that reads a CSV in TypeScript…</div>
-              </div>
-              <div className="rounded-md border bg-background p-3">
-                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <ProviderDot providerId="anthropic" /> Switched to Claude Sonnet 4.5
-                </div>
-                <div className="mt-1">
-                  I can do that, plus a type-safe parser. Want error handling for malformed rows?
-                </div>
-              </div>
-            </div>
-            <ul className="mt-6 space-y-2 text-xs text-muted-foreground">
-              {[
-                "Reklu Auto explains why it picked a model",
-                "Transparent cost, latency, and token usage",
-                "Persistent conversations with branching and search",
-              ].map((b) => (
-                <li key={b} className="flex items-start gap-2">
-                  <Check className="mt-0.5 size-3.5 shrink-0 text-primary" />
-                  <span>{b}</span>
-                </li>
-              ))}
-            </ul>
-          </ScrollReveal>
+        <div className="grid gap-4 lg:grid-cols-3 lg:[grid-template-areas:'chat_chat_models'_'chat_chat_skills']">
+          <ScrollReveal className="lg:[grid-area:chat]">
+            <div className="elev-card h-full rounded-2xl border border-border/70 bg-card p-7">
+              <SectionEyebrow icon={MessageSquare} label="Unified chat" />
+              <h3 className="display-md text-2xl">
+                One chat. Every model.
+                <br />
+                Switch mid-conversation.
+              </h3>
+              <p className="mt-3 text-[15px] text-muted-foreground">
+                Let Reklu Auto pick, or choose yourself. Compare models side by side with
+                transparent cost and latency on every response.
+              </p>
 
-          <ScrollReveal delay={0.06} className="rounded-lg border bg-card p-6 shadow-sm lg:[grid-area:models]">
-            <SectionEyebrow icon={Globe} label="Providers" />
-            <h3 className="font-display text-lg font-semibold tracking-tight">
-              All the leading models
-            </h3>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Direct APIs, no markup on list price.
-            </p>
-            <div className="mt-4 flex flex-wrap gap-1.5">
-              {MODELS.slice(0, 8).map((m, i) => (
-                <span
-                  key={`${m.name}-${i}`}
-                  className="inline-flex items-center gap-1.5 rounded-md border bg-background px-2 py-1 text-xs"
-                >
-                  <ProviderDot providerId={m.id} />
-                  {m.name}
-                </span>
-              ))}
+              <div className="mt-7 space-y-2.5">
+                <div className="elev-card rounded-xl rounded-tl-sm border border-border/60 bg-background p-4">
+                  <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                    <ProviderDot providerId="openai" /> GPT-4o
+                  </div>
+                  <p className="mt-1.5 text-sm">
+                    Sure — here's a function that reads a CSV in TypeScript…
+                  </p>
+                </div>
+                <div className="elev-lift rounded-xl rounded-tl-sm border border-primary/20 bg-card p-4">
+                  <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                    <ProviderDot providerId="anthropic" /> Switched to Claude Sonnet 4.5
+                  </div>
+                  <p className="mt-1.5 text-sm">
+                    I can do that, plus a type-safe parser. Want error handling for malformed
+                    rows?
+                  </p>
+                </div>
+              </div>
+
+              <ul className="mt-7 grid gap-2.5 sm:grid-cols-2">
+                {[
+                  "Auto explains its pick",
+                  "Cost, latency, tokens shown",
+                  "Branching conversations",
+                  "Full-text search",
+                ].map((b) => (
+                  <li key={b} className="flex items-start gap-2 text-sm text-muted-foreground">
+                    <Check className="mt-0.5 size-4 shrink-0 text-primary" />
+                    {b}
+                  </li>
+                ))}
+              </ul>
             </div>
           </ScrollReveal>
 
-          <ScrollReveal delay={0.12} className="rounded-lg border bg-card p-6 shadow-sm lg:[grid-area:skills]">
-            <SectionEyebrow icon={Zap} label="Skills" />
-            <h3 className="font-display text-lg font-semibold tracking-tight">
-              Complete AI workflows
-            </h3>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Instructions, model policy, tools, and quality checks — not a prompt library.
-            </p>
-            <div className="mt-4 flex flex-wrap gap-1.5">
-              {SKILLS.slice(0, 4).map((s) => (
-                <span key={s.name} className="rounded-md border bg-background px-2 py-1 text-xs">
-                  {s.name}
-                </span>
-              ))}
+          <ScrollReveal delay={0.06} className="lg:[grid-area:models]">
+            <div className="elev-card h-full rounded-2xl border border-border/70 bg-card p-7">
+              <SectionEyebrow icon={Globe} label="Providers" />
+              <h3 className="display-md text-xl">All the leading models</h3>
+              <p className="mt-2.5 text-sm text-muted-foreground">
+                Direct official APIs. No reseller, no markup on list price.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-2">
+                {MODELS.slice(0, 7).map((m, i) => (
+                  <span
+                    key={`${m.name}-${i}`}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-background px-2.5 py-1.5 text-xs font-medium"
+                  >
+                    <ProviderDot providerId={m.id} />
+                    {m.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.12} className="lg:[grid-area:skills]">
+            <div className="elev-card h-full rounded-2xl border border-border/70 bg-card p-7">
+              <SectionEyebrow icon={Zap} label="Skills" />
+              <h3 className="display-md text-xl">Complete AI workflows</h3>
+              <p className="mt-2.5 text-sm text-muted-foreground">
+                Instructions, model policy, tools, and quality checks — not a prompt library.
+              </p>
+              <div className="mt-5 space-y-2">
+                {SKILLS.map((s) => (
+                  <div
+                    key={s.name}
+                    className="rounded-lg border border-border/70 bg-background px-3 py-2"
+                  >
+                    <div className="text-sm font-medium">{s.name}</div>
+                    <div className="text-xs text-muted-foreground">{s.desc}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </ScrollReveal>
         </div>
 
-        <ScrollReveal delay={0.1} className="mt-3 rounded-lg border bg-card p-6 shadow-sm">
-          <div className="flex flex-wrap items-center justify-between gap-4">
+        <ScrollReveal delay={0.1} className="mt-4">
+          <div className="elev-card flex flex-wrap items-center justify-between gap-6 rounded-2xl border border-border/70 bg-card p-7">
             <div>
               <SectionEyebrow icon={FileText} label="Create" />
-              <h3 className="font-display text-lg font-semibold tracking-tight">
-                Real artifacts, not just text
-              </h3>
+              <h3 className="display-md text-xl">Real artifacts, not just text</h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Generate, edit, and export — from chat or a dedicated canvas.
+              </p>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2.5">
               {CREATORS.map(({ icon: Icon, name }) => (
                 <span
                   key={name}
-                  className="inline-flex items-center gap-1.5 rounded-md border bg-background px-2.5 py-1.5 text-xs font-medium"
+                  className="elev-card inline-flex items-center gap-2 rounded-xl border border-border/70 bg-background px-3.5 py-2.5 text-sm font-medium"
                 >
-                  <Icon className="size-3.5 text-primary" />
+                  <Icon className="size-4 text-primary" />
                   {name}
                 </span>
               ))}
@@ -305,66 +313,122 @@ function BentoFeatures() {
 
 function Connect() {
   return (
-    <section className="border-t py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+    <section className="border-t border-border/60 py-24 sm:py-28">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="grid items-center gap-14 lg:grid-cols-2">
           <ScrollReveal>
             <SectionEyebrow icon={Globe} label="Connect" />
-            <h2 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-              Connect AI to the tools you already use.
+            <h2 className="display-lg text-[clamp(1.9rem,3.5vw,2.6rem)]">
+              Connect AI to the tools you already use
             </h2>
-            <p className="mt-4 text-muted-foreground">
+            <p className="mt-4 text-[17px] text-muted-foreground">
               Native connectors for the apps you live in. Reklu reads your context and acts on
-              your behalf — with explicit permission for every write.
+              your behalf — with explicit approval before every write.
             </p>
-            <div className="mt-6 grid grid-cols-2 gap-2 text-sm sm:grid-cols-3">
+            <div className="mt-7 grid grid-cols-2 gap-2 sm:grid-cols-3">
               {[
                 "Google Drive",
                 "Gmail",
-                "Google Calendar",
+                "Calendar",
                 "Slack",
                 "Notion",
                 "GitHub",
                 "OneDrive",
                 "Outlook",
-                "Dropbox",
                 "Linear",
-                "Jira",
-                "HubSpot",
               ].map((c) => (
-                <div key={c} className="rounded-md border bg-background px-3 py-2 text-muted-foreground">
+                <div
+                  key={c}
+                  className="rounded-lg border border-border/70 bg-card px-3 py-2.5 text-sm text-muted-foreground"
+                >
                   {c}
                 </div>
               ))}
             </div>
           </ScrollReveal>
+
           <ScrollReveal delay={0.1}>
-            <Card>
-              <CardContent className="space-y-4 p-6">
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Shield className="size-3" /> Permission requested
+            <div className="elev-float rounded-2xl border border-border/70 bg-card p-6">
+              <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+                <Shield className="size-3.5 text-primary" /> Permission requested
+              </div>
+              <div className="mt-4 rounded-xl border border-border/70 bg-background p-4">
+                <div className="text-sm font-semibold">Send email to team@acme.com</div>
+                <div className="mt-1 text-xs text-muted-foreground">
+                  Subject: Q3 GTM plan draft for review
                 </div>
-                <div className="rounded-md border bg-background p-4">
-                  <div className="text-sm font-medium">Send email to team@acme.com</div>
-                  <div className="mt-1 text-xs text-muted-foreground">
-                    Subject: Q3 GTM plan draft for review
-                  </div>
-                  <div className="mt-2 max-h-24 overflow-hidden text-xs text-muted-foreground">
-                    Hi team — I've drafted the Q3 GTM plan for the new visibility product. It
-                    covers the ICP, three core plays, and a 30-day pulse measurement…
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button size="sm" className="flex-1">
-                    Approve
-                  </Button>
-                  <Button size="sm" variant="outline" className="flex-1">
-                    Reject
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                  Hi team — I've drafted the Q3 GTM plan for the new visibility product. It
+                  covers the ICP, three core plays, and a 30-day pulse measurement…
+                </p>
+              </div>
+              <div className="mt-4 flex gap-2.5">
+                <Button size="sm" className="flex-1">
+                  Approve
+                </Button>
+                <Button size="sm" variant="outline" className="flex-1">
+                  Reject
+                </Button>
+              </div>
+            </div>
           </ScrollReveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Testimonials() {
+  const items = [
+    {
+      metric: "62%",
+      metricLabel: "less time per task",
+      quote:
+        "We stopped paying for three separate AI subscriptions. Reklu routes to whatever's best and we finally see what each answer actually costs.",
+      name: "Marcus A.",
+      role: "Head of Engineering",
+    },
+    {
+      metric: "4 → 1",
+      metricLabel: "tools consolidated",
+      quote:
+        "The model comparison alone justified it. Our writers pick the model that fits the brief instead of defaulting to whatever tab was open.",
+      name: "Priya N.",
+      role: "Content Lead",
+    },
+  ];
+
+  return (
+    <section className="border-t border-border/60 py-24 sm:py-28">
+      <div className="mx-auto max-w-6xl px-6">
+        <ScrollReveal className="mx-auto mb-14 max-w-2xl text-center">
+          <SectionEyebrow icon={Star} label="Testimonials" center />
+          <h2 className="display-lg text-[clamp(2rem,4vw,2.85rem)]">
+            Teams that stopped tab-switching
+          </h2>
+        </ScrollReveal>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          {items.map((t, i) => (
+            <ScrollReveal key={t.name} delay={i * 0.08}>
+              <div className="elev-card flex h-full flex-col rounded-2xl border border-border/70 bg-card p-8">
+                <div className="flex items-baseline gap-2.5">
+                  <span className="display-lg text-4xl text-primary">{t.metric}</span>
+                  <span className="text-sm text-muted-foreground">{t.metricLabel}</span>
+                </div>
+                <p className="mt-6 flex-1 text-[15px] leading-relaxed">"{t.quote}"</p>
+                <div className="mt-6 flex items-center gap-3 border-t border-border/70 pt-5">
+                  <span className="grid size-9 place-items-center rounded-full bg-muted text-xs font-semibold">
+                    {t.name.slice(0, 1)}
+                  </span>
+                  <div className="text-sm">
+                    <div className="font-medium">{t.name}</div>
+                    <div className="text-muted-foreground">{t.role}</div>
+                  </div>
+                </div>
+              </div>
+            </ScrollReveal>
+          ))}
         </div>
       </div>
     </section>
@@ -373,15 +437,18 @@ function Connect() {
 
 function Pricing() {
   return (
-    <section className="border-t py-24" id="pricing">
-      <div className="mx-auto max-w-7xl px-6">
-        <ScrollReveal className="mx-auto max-w-2xl text-center">
-          <h2 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+    <section className="border-t border-border/60 py-24 sm:py-28" id="pricing">
+      <div className="mx-auto max-w-6xl px-6">
+        <ScrollReveal className="mx-auto mb-14 max-w-2xl text-center">
+          <SectionEyebrow icon={Zap} label="Pricing" center />
+          <h2 className="display-lg text-[clamp(2rem,4vw,2.85rem)]">
             Simple, transparent pricing
           </h2>
-          <p className="mt-3 text-muted-foreground">Pay for what you use. Cancel any time.</p>
+          <p className="mt-4 text-[17px] text-muted-foreground">
+            Pay for what you use. Cancel any time.
+          </p>
         </ScrollReveal>
-        <ScrollReveal delay={0.1} className="mt-12">
+        <ScrollReveal delay={0.1}>
           <PricingGrid />
         </ScrollReveal>
         <p className="mt-8 text-center text-sm text-muted-foreground">
@@ -396,7 +463,7 @@ function FAQ() {
   const items = [
     {
       q: "How does Reklu connect to AI providers?",
-      a: "We use direct official APIs from OpenAI, Anthropic, and Google. We never route through resellers or mark up list price — what you see is what the provider charges.",
+      a: "We use direct official APIs from OpenAI, Anthropic, Google, and others. We never route through resellers or mark up list price — what you see is what the provider charges.",
     },
     {
       q: "Can I bring my own API key?",
@@ -404,34 +471,31 @@ function FAQ() {
     },
     {
       q: "How does Reklu Auto decide which model to use?",
-      a: "Reklu Auto looks at your message, required capabilities (vision, tools, reasoning), and your quality/speed/cost preference. It picks the most appropriate available model and shows you why.",
+      a: "It looks at your message, the capabilities required (vision, tools, reasoning), and your quality/speed/cost preference — then picks the best available model and shows you why.",
     },
     {
       q: "What is a skill?",
-      a: "A skill is a versioned AI workflow — instructions, model policy, allowed tools, output format, and quality checks. Skills are not saved prompts; they are real, testable workflows.",
+      a: "A versioned AI workflow: instructions, model policy, allowed tools, output format, and quality checks. Skills are not saved prompts — they are real, testable workflows.",
     },
     {
       q: "Is my data private?",
-      a: "Your conversations and files are private to your workspace. We never train on your data. You can delete your account and all associated data at any time.",
+      a: "Your conversations and files are private to your workspace. We never train on your data, and you can delete your account and everything in it at any time.",
     },
   ];
+
   return (
-    <section className="border-t py-24">
+    <section className="border-t border-border/60 py-24 sm:py-28">
       <div className="mx-auto max-w-3xl px-6">
-        <ScrollReveal>
-          <h2 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-            Frequently asked
-          </h2>
+        <ScrollReveal className="mb-12 text-center">
+          <h2 className="display-lg text-[clamp(2rem,4vw,2.85rem)]">Frequently asked</h2>
         </ScrollReveal>
-        <div className="mt-10 space-y-3">
+        <div className="space-y-3">
           {items.map((it, i) => (
             <ScrollReveal key={it.q} delay={Math.min(i * 0.05, 0.2)}>
-              <Card>
-                <CardContent className="p-6">
-                  <h3 className="font-medium">{it.q}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{it.a}</p>
-                </CardContent>
-              </Card>
+              <div className="elev-card rounded-xl border border-border/70 bg-card p-6">
+                <h3 className="font-display text-[17px] font-semibold tracking-tight">{it.q}</h3>
+                <p className="mt-2.5 text-[15px] leading-relaxed text-muted-foreground">{it.a}</p>
+              </div>
             </ScrollReveal>
           ))}
         </div>
@@ -442,22 +506,49 @@ function FAQ() {
 
 function FinalCTA() {
   return (
-    <section className="border-t py-24">
-      <div className="mx-auto max-w-4xl px-6 text-center">
-        <ScrollReveal>
-          <h2 className="text-balance font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-            Ready to try every leading model?
-          </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
-            Open Reklu, start a chat, and let the workspace handle the rest.
-          </p>
-          <Button asChild size="xl" className="mt-8">
-            <Link href="/sign-up">
-              Start using Reklu <ArrowRight />
-            </Link>
-          </Button>
-        </ScrollReveal>
-      </div>
+    <section className="px-6 py-24 sm:py-28">
+      <ScrollReveal className="mx-auto max-w-5xl">
+        <div className="elev-float relative overflow-hidden rounded-3xl bg-foreground px-8 py-16 text-center text-background sm:px-16">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-full h-[300px] w-[600px] -translate-x-1/2 -translate-y-1/3 rounded-full opacity-40 blur-[100px]"
+            style={{ background: "hsl(var(--primary))" }}
+          />
+          <div className="relative">
+            <div className="mb-6 flex justify-center gap-2">
+              {["openai", "anthropic", "google", "xai"].map((id, i) => (
+                <ProviderMark
+                  key={id}
+                  providerId={id}
+                  letter={["O", "A", "G", "X"][i]}
+                  size="sm"
+                />
+              ))}
+            </div>
+            <h2 className="display-lg text-balance text-[clamp(2rem,4.5vw,3.25rem)]">
+              Ready to try every leading model?
+            </h2>
+            <p className="mx-auto mt-5 max-w-lg text-[17px] text-background/70">
+              Open Reklu, start a chat, and let the workspace handle the rest.
+            </p>
+            <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <Button asChild size="xl" className="w-full sm:w-auto">
+                <Link href="/sign-up">
+                  Start 7-day free trial <ArrowRight />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="xl"
+                variant="ghost"
+                className="w-full border border-background/20 text-background hover:bg-background/10 hover:text-background sm:w-auto"
+              >
+                <Link href="/pricing">View pricing</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </ScrollReveal>
     </section>
   );
 }

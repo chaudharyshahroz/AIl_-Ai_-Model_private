@@ -61,7 +61,7 @@ export default function FeaturesPage() {
           <Layers className="size-3.5" />
           <span className="text-xs font-semibold uppercase tracking-[0.14em]">Features</span>
         </div>
-        <h1 className="text-balance font-display text-4xl font-semibold tracking-tight sm:text-5xl">
+        <h1 className="text-balance display-lg text-4xl sm:text-5xl">
           Everything you need in one workspace
         </h1>
         <SpectrumRule className="mx-auto mt-6 w-16" />
@@ -86,7 +86,7 @@ export default function FeaturesPage() {
       <section className="border-t py-20">
         <div className="mx-auto max-w-3xl px-6 text-center">
           <SectionEyebrow icon={Zap} label="Get started" center />
-          <h2 className="font-display text-3xl font-semibold tracking-tight">Try it now</h2>
+          <h2 className="display-lg text-3xl">Try it now</h2>
           <p className="mt-3 text-muted-foreground">Open Reklu, start a chat, and see for yourself.</p>
           <Button asChild size="xl" className="mt-6">
             <Link href="/sign-up">Start using Reklu</Link>

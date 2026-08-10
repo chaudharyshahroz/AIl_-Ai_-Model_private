@@ -39,7 +39,7 @@ export default async function SignInPage({
           >
             ← Back to reklu.app
           </Link>
-          <h1 className="mt-4 font-display text-3xl font-semibold tracking-tight">Welcome back</h1>
+          <h1 className="mt-4 display-lg text-3xl">Welcome back</h1>
           <p className="mt-2 text-sm text-muted-foreground">
             Sign in to continue your conversations.
           </p>

@@ -37,7 +37,7 @@ export function ContextPanel({ conversations }: { conversations: ConversationLis
                   key={c.id}
                   href={`/app/chat/${c.id}`}
                   className={cn(
-                    "relative block rounded px-2.5 py-2 text-sm transition-colors",
+                    "relative block rounded-lg px-2.5 py-2 text-sm transition-colors",
                     active ? "bg-accent text-accent-foreground" : "hover:bg-muted",
                   )}
                 >

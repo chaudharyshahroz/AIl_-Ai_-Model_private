@@ -1,10 +1,17 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-
-/** Fade + rise on mount. For above-the-fold hero content. */
+/**
+ * Fade + rise on mount, for above-the-fold content.
+ *
+ * Uses a CSS animation rather than a rAF-driven library on purpose: CSS
+ * animations are time-based, so if the page is opened in a background tab the
+ * animation has already elapsed by the time it's viewed. A rAF-driven
+ * animation is paused there and would leave the hero stuck invisible until
+ * the tab gets focus.
+ */
 export function Reveal({
   children,
   delay = 0,
@@ -14,21 +21,21 @@ export function Reveal({
   delay?: number;
   className?: string;
 }) {
-  const reduced = useReducedMotion();
-  if (reduced) return <div className={className}>{children}</div>;
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 14 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay, ease: EASE }}
+    <div
+      className={cn("reveal-up", className)}
+      style={delay ? { animationDelay: `${delay}s` } : undefined}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
-/** Fade + rise once when scrolled into view. For below-the-fold sections. */
+/**
+ * Fade + rise once when scrolled into view, for below-the-fold sections.
+ * IntersectionObserver flips a class; the transition itself is CSS, so the
+ * content is never left invisible if animation frames aren't running.
+ */
 export function ScrollReveal({
   children,
   delay = 0,
@@ -38,17 +45,37 @@ export function ScrollReveal({
   delay?: number;
   className?: string;
 }) {
-  const reduced = useReducedMotion();
-  if (reduced) return <div className={className}>{children}</div>;
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [shown, setShown] = React.useState(false);
+
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    // No IntersectionObserver (or already past it) — just show it.
+    if (typeof IntersectionObserver === "undefined") {
+      setShown(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setShown(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "-60px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.55, delay, ease: EASE }}
+    <div
+      ref={ref}
+      className={cn("scroll-reveal", shown && "is-visible", className)}
+      style={delay ? { transitionDelay: `${delay}s` } : undefined}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

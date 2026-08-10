@@ -83,7 +83,7 @@ export default async function SignUpPage({
           >
             ← Back to reklu.app
           </Link>
-          <h1 className="mt-4 font-display text-3xl font-semibold tracking-tight">
+          <h1 className="mt-4 display-lg text-3xl">
             Create your account
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">

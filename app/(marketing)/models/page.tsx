@@ -26,7 +26,7 @@ export default async function ModelsPage() {
           <Layers className="size-3.5" />
           <span className="text-xs font-semibold uppercase tracking-[0.14em]">Models</span>
         </div>
-        <h1 className="font-display text-4xl font-semibold tracking-tight">
+        <h1 className="display-lg text-4xl">
           All models, transparent pricing
         </h1>
         <SpectrumRule className="mt-6 w-16" />

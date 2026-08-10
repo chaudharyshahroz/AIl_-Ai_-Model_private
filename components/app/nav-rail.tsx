@@ -73,7 +73,7 @@ function RailButton({
         <Link
           href={href}
           className={cn(
-            "relative flex size-10 items-center justify-center rounded transition-colors",
+            "relative flex size-10 items-center justify-center rounded-lg transition-colors",
             variant === "primary"
               ? "bg-primary text-primary-foreground hover:bg-primary/90"
               : active
@@ -106,7 +106,7 @@ export function NavRail({
   return (
     <aside className="flex h-full w-16 shrink-0 flex-col items-center border-r bg-background">
       <div className="flex h-14 w-full items-center justify-center border-b">
-        <Link href="/" className="grid size-8 place-items-center rounded bg-foreground text-background">
+        <Link href="/" className="grid size-8 place-items-center rounded-lg bg-foreground text-background">
           <span className="font-mono text-xs font-bold">R</span>
         </Link>
       </div>
@@ -117,7 +117,7 @@ export function NavRail({
             <button
               onClick={togglePanel}
               aria-label="Toggle chat list"
-              className="flex size-10 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              className="flex size-10 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               <PanelLeft className="size-[18px]" />
             </button>
@@ -155,7 +155,7 @@ export function NavRail({
             <TooltipTrigger asChild>
               <Link
                 href="/admin"
-                className="flex size-10 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                className="flex size-10 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
                 <ShieldCheck className="size-[18px]" />
               </Link>
