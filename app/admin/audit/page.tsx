@@ -1,7 +1,8 @@
 import { requireAdmin } from "@/lib/admin/auth";
 import { db } from "@/lib/db";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { AdminPageShell } from "@/components/admin/page-shell";
 import { formatRelativeTime } from "@/lib/utils";
 
@@ -29,38 +30,49 @@ export default async function AdminAuditPage() {
     >
       <Card>
         <CardContent className="p-0">
-          <div className="divide-y">
-            {events.length === 0 ? (
-              <p className="p-8 text-center text-sm text-muted-foreground">No events yet.</p>
-            ) : (
-              events.map((e) => {
-                const actor = e.actorId ? actorMap.get(e.actorId) : null;
-                return (
-                  <div key={e.id} className="grid grid-cols-[160px_1fr_auto] gap-3 p-3 text-sm hover:bg-muted/30">
-                    <div>
-                      <Badge variant="outline" className="text-[10px]">{e.action}</Badge>
-                    </div>
-                    <div className="min-w-0">
-                      <div className="text-xs">
-                        {actor && <span className="text-muted-foreground">by {actor.name ?? actor.email}</span>}
-                        {e.targetType && e.targetId && (
-                          <span className="ml-2 text-muted-foreground">
-                            on {e.targetType}:{e.targetId.slice(0, 8)}
-                          </span>
+          {events.length === 0 ? (
+            <p className="p-8 text-center text-sm text-muted-foreground">No events yet.</p>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Action</TableHead>
+                  <TableHead>Detail</TableHead>
+                  <TableHead className="text-right">When</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {events.map((e) => {
+                  const actor = e.actorId ? actorMap.get(e.actorId) : null;
+                  return (
+                    <TableRow key={e.id}>
+                      <TableCell className="whitespace-nowrap">
+                        <Badge variant="outline" className="text-[10px]">{e.action}</Badge>
+                      </TableCell>
+                      <TableCell className="min-w-[280px]">
+                        <div className="text-xs">
+                          {actor && <span className="text-muted-foreground">by {actor.name ?? actor.email}</span>}
+                          {e.targetType && e.targetId && (
+                            <span className="ml-2 text-muted-foreground">
+                              on {e.targetType}:{e.targetId.slice(0, 8)}
+                            </span>
+                          )}
+                        </div>
+                        {e.metadata && e.metadata !== "{}" && (
+                          <pre className="mt-1 max-w-2xl overflow-x-auto rounded bg-muted/40 px-2 py-1 font-mono text-[10px] text-muted-foreground">
+                            {e.metadata}
+                          </pre>
                         )}
-                      </div>
-                      {e.metadata && e.metadata !== "{}" && (
-                        <pre className="mt-1 max-w-2xl overflow-x-auto rounded bg-muted/40 px-2 py-1 font-mono text-[10px] text-muted-foreground">
-                          {e.metadata}
-                        </pre>
-                      )}
-                    </div>
-                    <div className="text-xs text-muted-foreground">{formatRelativeTime(e.createdAt)}</div>
-                  </div>
-                );
-              })
-            )}
-          </div>
+                      </TableCell>
+                      <TableCell className="whitespace-nowrap text-right text-xs text-muted-foreground">
+                        {formatRelativeTime(e.createdAt)}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          )}
         </CardContent>
       </Card>
     </AdminPageShell>

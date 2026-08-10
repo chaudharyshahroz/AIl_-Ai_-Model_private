@@ -367,7 +367,7 @@ export function ChatWorkspace({
       {/* Composer */}
       <div className="border-t bg-background/80 p-4 backdrop-blur">
         <div className="mx-auto max-w-3xl">
-          <div className="relative overflow-hidden rounded-2xl border bg-muted/30 shadow-sm transition-colors focus-within:border-foreground/30">
+          <div className="relative overflow-hidden rounded-xl border bg-muted/30 shadow-sm transition-colors focus-within:border-foreground/30">
             {isStreaming && (
               <div className="spectrum-rule-animated absolute inset-x-0 top-0 h-[2px]" />
             )}
@@ -555,7 +555,7 @@ function MessageBubble({ message }: { message: MessageItem }) {
       )}
       <div className={cn("min-w-0 max-w-[80%]", isUser ? "items-end" : "items-start")}>
         {isUser ? (
-          <div className="rounded-2xl bg-muted px-4 py-2.5 text-sm">
+          <div className="rounded-xl bg-muted px-4 py-2.5 text-sm">
             <p className="whitespace-pre-wrap break-words">{message.content}</p>
           </div>
         ) : (

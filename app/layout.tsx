@@ -1,24 +1,20 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
 
-const inter = Inter({
+const plexSans = IBM_Plex_Sans({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
   display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
+const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const jetbrains = JetBrains_Mono({
-  subsets: ["latin"],
+  weight: ["400", "500", "600"],
   variable: "--font-mono",
   display: "swap",
 });
@@ -75,15 +71,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   document.documentElement.classList.add(d);
                   document.documentElement.style.colorScheme = d;
                 } catch (e) {}
+                try {
+                  if (localStorage.getItem('reklu-panel-collapsed') === '1') {
+                    document.documentElement.classList.add('panel-collapsed');
+                  }
+                  if (localStorage.getItem('reklu-admin-sidebar-collapsed') === '1') {
+                    document.documentElement.classList.add('admin-sidebar-collapsed');
+                  }
+                } catch (e) {}
               })();
             `,
           }}
         />
-        <meta name="theme-color" content="#0f0d0a" media="(prefers-color-scheme: dark)" />
-        <meta name="theme-color" content="#f7f4ee" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#0f0f0f" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
       </head>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrains.variable} antialiased`}
+        className={`${plexSans.variable} ${plexMono.variable} antialiased`}
         suppressHydrationWarning
       >
         <ThemeProvider

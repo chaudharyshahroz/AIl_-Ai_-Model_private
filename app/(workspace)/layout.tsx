@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth, signOut } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { Sidebar } from "@/components/app/sidebar";
+import { AppShell } from "@/components/app/app-shell";
 import { TopBar } from "@/components/app/topbar";
 
 export const dynamic = "force-dynamic";
@@ -62,30 +62,22 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="grid h-screen grid-cols-[260px_1fr] bg-background">
-      <Sidebar
-        user={{
-          id: session.user.id,
-          name: session.user.name ?? null,
-          email: session.user.email ?? null,
-          image: session.user.image ?? null,
-          isAdmin: session.user.isAdmin ?? false,
-        }}
-        organization={{
-          id: membership!.organization.id,
-          name: membership!.organization.name,
-          slug: membership!.organization.slug,
-        }}
-        conversations={conversations.map((c) => ({
-          ...c,
-          lastMessageAt: c.lastMessageAt.toISOString(),
-        }))}
-        signOutAction={signOutAction}
-      />
-      <div className="flex h-full flex-col overflow-hidden">
-        <TopBar user={{ name: session.user.name ?? null, email: session.user.email ?? null }} />
-        <main className="flex-1 overflow-hidden">{children}</main>
-      </div>
-    </div>
+    <AppShell
+      user={{
+        name: session.user.name ?? null,
+        email: session.user.email ?? null,
+        image: session.user.image ?? null,
+        isAdmin: session.user.isAdmin ?? false,
+      }}
+      organization={{ name: membership!.organization.name }}
+      conversations={conversations.map((c) => ({
+        ...c,
+        lastMessageAt: c.lastMessageAt.toISOString(),
+      }))}
+      signOutAction={signOutAction}
+    >
+      <TopBar />
+      <main className="flex-1 overflow-hidden">{children}</main>
+    </AppShell>
   );
 }

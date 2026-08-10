@@ -1,7 +1,7 @@
 import { requireAdmin } from "@/lib/admin/auth";
 import { db } from "@/lib/db";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { AdminPageShell } from "@/components/admin/page-shell";
 import { ProviderDot } from "@/components/ui/provider-badge";
 import { formatMicros, formatTokens } from "@/lib/utils";
@@ -149,27 +149,35 @@ export default async function AdminUsagePage({
           <CardHeader>
             <CardTitle className="text-base">By provider</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-0">
             {byProvider.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No usage.</p>
+              <p className="p-6 text-sm text-muted-foreground">No usage.</p>
             ) : (
-              <div className="space-y-1.5">
-                {byProvider.map((p) => (
-                  <div key={p.providerId} className="flex items-center justify-between rounded-md border px-3 py-2 text-sm">
-                    <div className="flex items-center gap-2">
-                      <Badge variant="outline" className="gap-1.5">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Provider</TableHead>
+                    <TableHead className="text-right">Req</TableHead>
+                    <TableHead className="text-right">Tokens</TableHead>
+                    <TableHead className="text-right">Cost</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {byProvider.map((p) => (
+                    <TableRow key={p.providerId}>
+                      <TableCell className="flex items-center gap-1.5 font-medium">
                         <ProviderDot providerId={p.providerId} />
                         {p.providerId}
-                      </Badge>
-                      <span className="text-xs text-muted-foreground">{p._count._all} req</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-xs">
-                      <span className="text-muted-foreground">{formatTokens((p._sum.inputTokens ?? 0) + (p._sum.outputTokens ?? 0))}</span>
-                      <span className="font-medium">{formatMicros(p._sum.costMicros ?? 0)}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                      </TableCell>
+                      <TableCell className="text-right text-muted-foreground">{p._count._all}</TableCell>
+                      <TableCell className="text-right font-mono text-xs">
+                        {formatTokens((p._sum.inputTokens ?? 0) + (p._sum.outputTokens ?? 0))}
+                      </TableCell>
+                      <TableCell className="text-right font-medium">{formatMicros(p._sum.costMicros ?? 0)}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             )}
           </CardContent>
         </Card>
@@ -178,25 +186,35 @@ export default async function AdminUsagePage({
           <CardHeader>
             <CardTitle className="text-base">By model (top 20)</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-0">
             {byModel.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No usage.</p>
+              <p className="p-6 text-sm text-muted-foreground">No usage.</p>
             ) : (
-              <div className="space-y-1.5">
-                {byModel.map((m) => (
-                  <div key={`${m.providerId}/${m.modelId}`} className="flex items-center justify-between rounded-md border px-3 py-1.5 text-sm">
-                    <div className="flex items-center gap-2">
-                      <ProviderDot providerId={m.providerId} />
-                      <code className="font-mono text-xs">{m.modelId}</code>
-                      <span className="text-xs text-muted-foreground">{m._count._all} req</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-xs">
-                      <span className="text-muted-foreground">{formatTokens((m._sum.inputTokens ?? 0) + (m._sum.outputTokens ?? 0))}</span>
-                      <span className="font-medium">{formatMicros(m._sum.costMicros ?? 0)}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Model</TableHead>
+                    <TableHead className="text-right">Req</TableHead>
+                    <TableHead className="text-right">Tokens</TableHead>
+                    <TableHead className="text-right">Cost</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {byModel.map((m) => (
+                    <TableRow key={`${m.providerId}/${m.modelId}`}>
+                      <TableCell className="flex items-center gap-1.5">
+                        <ProviderDot providerId={m.providerId} />
+                        <code className="font-mono text-xs">{m.modelId}</code>
+                      </TableCell>
+                      <TableCell className="text-right text-muted-foreground">{m._count._all}</TableCell>
+                      <TableCell className="text-right font-mono text-xs">
+                        {formatTokens((m._sum.inputTokens ?? 0) + (m._sum.outputTokens ?? 0))}
+                      </TableCell>
+                      <TableCell className="text-right font-medium">{formatMicros(m._sum.costMicros ?? 0)}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             )}
           </CardContent>
         </Card>
@@ -205,27 +223,34 @@ export default async function AdminUsagePage({
           <CardHeader>
             <CardTitle className="text-base">By organization</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-0">
             {byOrg.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No usage.</p>
+              <p className="p-6 text-sm text-muted-foreground">No usage.</p>
             ) : (
-              <div className="space-y-1.5">
-                {byOrg.map((o) => {
-                  const org = orgMap.get(o.organizationId);
-                  return (
-                    <div key={o.organizationId} className="flex items-center justify-between rounded-md border px-3 py-1.5 text-sm">
-                      <div>
-                        <div className="font-medium">{org?.name ?? "—"}</div>
-                        <div className="text-xs text-muted-foreground">{org?.slug}</div>
-                      </div>
-                      <div className="flex items-center gap-3 text-xs">
-                        <span className="text-muted-foreground">{o._count._all} req</span>
-                        <span className="font-medium">{formatMicros(o._sum.costMicros ?? 0)}</span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Organization</TableHead>
+                    <TableHead className="text-right">Req</TableHead>
+                    <TableHead className="text-right">Cost</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {byOrg.map((o) => {
+                    const org = orgMap.get(o.organizationId);
+                    return (
+                      <TableRow key={o.organizationId}>
+                        <TableCell>
+                          <div className="font-medium">{org?.name ?? "—"}</div>
+                          <div className="text-xs text-muted-foreground">{org?.slug}</div>
+                        </TableCell>
+                        <TableCell className="text-right text-muted-foreground">{o._count._all}</TableCell>
+                        <TableCell className="text-right font-medium">{formatMicros(o._sum.costMicros ?? 0)}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
             )}
           </CardContent>
         </Card>
@@ -234,27 +259,34 @@ export default async function AdminUsagePage({
           <CardHeader>
             <CardTitle className="text-base">By user (top 20)</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-0">
             {byUser.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No usage.</p>
+              <p className="p-6 text-sm text-muted-foreground">No usage.</p>
             ) : (
-              <div className="space-y-1.5">
-                {byUser.map((u) => {
-                  const user = userMap.get(u.userId);
-                  return (
-                    <div key={u.userId} className="flex items-center justify-between rounded-md border px-3 py-1.5 text-sm">
-                      <div>
-                        <div className="font-medium">{user?.name ?? "—"}</div>
-                        <div className="text-xs text-muted-foreground">{user?.email}</div>
-                      </div>
-                      <div className="flex items-center gap-3 text-xs">
-                        <span className="text-muted-foreground">{u._count._all} req</span>
-                        <span className="font-medium">{formatMicros(u._sum.costMicros ?? 0)}</span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>User</TableHead>
+                    <TableHead className="text-right">Req</TableHead>
+                    <TableHead className="text-right">Cost</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {byUser.map((u) => {
+                    const user = userMap.get(u.userId);
+                    return (
+                      <TableRow key={u.userId}>
+                        <TableCell>
+                          <div className="font-medium">{user?.name ?? "—"}</div>
+                          <div className="text-xs text-muted-foreground">{user?.email}</div>
+                        </TableCell>
+                        <TableCell className="text-right text-muted-foreground">{u._count._all}</TableCell>
+                        <TableCell className="text-right font-medium">{formatMicros(u._sum.costMicros ?? 0)}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
             )}
           </CardContent>
         </Card>

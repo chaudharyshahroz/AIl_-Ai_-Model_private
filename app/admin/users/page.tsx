@@ -1,9 +1,10 @@
 import { requireAdmin } from "@/lib/admin/auth";
 import { db } from "@/lib/db";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { AdminPageShell } from "@/components/admin/page-shell";
 import { revalidatePath } from "next/cache";
 import { formatMicros, formatRelativeTime, formatTokens } from "@/lib/utils";
@@ -137,85 +138,102 @@ export default async function AdminUsersPage({
     >
       <Card>
         <CardContent className="p-0">
-          <div className="divide-y">
-            {users.length === 0 ? (
-              <p className="p-8 text-center text-sm text-muted-foreground">No users found.</p>
-            ) : (
-              users.map((u) => {
-                const totalCost = u.usageEvents.reduce((s, e) => s + e.costMicros, 0);
-                const totalTokens = u.usageEvents.reduce((s, e) => s + e.inputTokens + e.outputTokens, 0);
-                const org = u.memberships[0]?.organization;
-                return (
-                  <div key={u.id} className="grid grid-cols-[1fr_auto] gap-4 p-4 hover:bg-muted/30">
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="truncate font-medium">{u.name ?? "—"}</span>
-                        {u.isAdmin && (
-                          <Badge variant="outline" className="gap-1 text-[10px]">
-                            <ShieldCheck className="size-2.5" /> Admin
-                          </Badge>
-                        )}
-                        {u.isSuspended && (
-                          <Badge variant="destructive" className="text-[10px]">Suspended</Badge>
-                        )}
-                      </div>
-                      <div className="truncate text-xs text-muted-foreground">{u.email}</div>
-                      <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-0.5 text-xs text-muted-foreground">
-                        {org && <span>Org: {org.name}</span>}
-                        <span>Joined {formatRelativeTime(u.createdAt)}</span>
-                        <span>{u._count.conversations} chats</span>
-                        <span>{formatTokens(totalTokens)} tokens (30d)</span>
-                        <span className="font-medium text-foreground">{formatMicros(totalCost)} (30d)</span>
-                      </div>
-                    </div>
-                    <div className="flex flex-wrap items-start justify-end gap-1.5">
-                      <form action={grantCredits}>
-                        <input type="hidden" name="userId" value={u.id} />
-                        <input type="hidden" name="amountMicros" value="5000000" />
-                        <Button type="submit" size="sm" variant="outline" title="Grant $5 in credits">
-                          <Coins /> +$5
-                        </Button>
-                      </form>
-                      <form action={setAdmin}>
-                        <input type="hidden" name="userId" value={u.id} />
-                        <input
-                          type="hidden"
-                          name="action"
-                          value={u.isAdmin ? "revoke" : "grant"}
-                        />
-                        <Button type="submit" size="sm" variant="outline">
-                          {u.isAdmin ? "Revoke admin" : "Make admin"}
-                        </Button>
-                      </form>
-                      <form action={setSuspended}>
-                        <input type="hidden" name="userId" value={u.id} />
-                        <input
-                          type="hidden"
-                          name="action"
-                          value={u.isSuspended ? "unsuspend" : "suspend"}
-                        />
-                        <Button
-                          type="submit"
-                          size="sm"
-                          variant={u.isSuspended ? "outline" : "destructive"}
-                        >
-                          {u.isSuspended ? (
-                            <>
-                              <CheckCircle2 /> Unsuspend
-                            </>
-                          ) : (
-                            <>
-                              <Ban /> Suspend
-                            </>
+          {users.length === 0 ? (
+            <p className="p-8 text-center text-sm text-muted-foreground">No users found.</p>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>User</TableHead>
+                  <TableHead>Org</TableHead>
+                  <TableHead>Joined</TableHead>
+                  <TableHead className="text-right">Chats</TableHead>
+                  <TableHead className="text-right">Tokens (30d)</TableHead>
+                  <TableHead className="text-right">Cost (30d)</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {users.map((u) => {
+                  const totalCost = u.usageEvents.reduce((s, e) => s + e.costMicros, 0);
+                  const totalTokens = u.usageEvents.reduce((s, e) => s + e.inputTokens + e.outputTokens, 0);
+                  const org = u.memberships[0]?.organization;
+                  return (
+                    <TableRow key={u.id}>
+                      <TableCell className="min-w-[220px]">
+                        <div className="flex items-center gap-2">
+                          <span className="truncate font-medium">{u.name ?? "—"}</span>
+                          {u.isAdmin && (
+                            <Badge variant="outline" className="gap-1 text-[10px]">
+                              <ShieldCheck className="size-2.5" /> Admin
+                            </Badge>
                           )}
-                        </Button>
-                      </form>
-                    </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
+                          {u.isSuspended && (
+                            <Badge variant="destructive" className="text-[10px]">Suspended</Badge>
+                          )}
+                        </div>
+                        <div className="truncate text-xs text-muted-foreground">{u.email}</div>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">{org?.name ?? "—"}</TableCell>
+                      <TableCell className="whitespace-nowrap text-muted-foreground">
+                        {formatRelativeTime(u.createdAt)}
+                      </TableCell>
+                      <TableCell className="text-right font-mono">{u._count.conversations}</TableCell>
+                      <TableCell className="text-right font-mono">{formatTokens(totalTokens)}</TableCell>
+                      <TableCell className="text-right font-mono font-medium">
+                        {formatMicros(totalCost)}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex flex-wrap items-center justify-end gap-1.5">
+                          <form action={grantCredits}>
+                            <input type="hidden" name="userId" value={u.id} />
+                            <input type="hidden" name="amountMicros" value="5000000" />
+                            <Button type="submit" size="sm" variant="outline" title="Grant $5 in credits">
+                              <Coins /> +$5
+                            </Button>
+                          </form>
+                          <form action={setAdmin}>
+                            <input type="hidden" name="userId" value={u.id} />
+                            <input
+                              type="hidden"
+                              name="action"
+                              value={u.isAdmin ? "revoke" : "grant"}
+                            />
+                            <Button type="submit" size="sm" variant="outline">
+                              {u.isAdmin ? "Revoke admin" : "Make admin"}
+                            </Button>
+                          </form>
+                          <form action={setSuspended}>
+                            <input type="hidden" name="userId" value={u.id} />
+                            <input
+                              type="hidden"
+                              name="action"
+                              value={u.isSuspended ? "unsuspend" : "suspend"}
+                            />
+                            <Button
+                              type="submit"
+                              size="sm"
+                              variant={u.isSuspended ? "outline" : "destructive"}
+                            >
+                              {u.isSuspended ? (
+                                <>
+                                  <CheckCircle2 /> Unsuspend
+                                </>
+                              ) : (
+                                <>
+                                  <Ban /> Suspend
+                                </>
+                              )}
+                            </Button>
+                          </form>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          )}
         </CardContent>
       </Card>
 

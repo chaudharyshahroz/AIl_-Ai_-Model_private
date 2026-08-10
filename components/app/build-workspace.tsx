@@ -297,7 +297,7 @@ export function BuildWorkspace({
                 <div key={i} className={cn("flex", m.role === "user" ? "justify-end" : "justify-start")}>
                   <div
                     className={cn(
-                      "max-w-[85%] rounded-2xl px-4 py-2.5 text-sm",
+                      "max-w-[85%] rounded-xl px-4 py-2.5 text-sm",
                       m.role === "user" ? "bg-muted" : "bg-card border",
                     )}
                   >
@@ -329,7 +329,7 @@ export function BuildWorkspace({
         )}
 
         <div className="border-t bg-background/80 p-3 backdrop-blur">
-          <div className="rounded-2xl border bg-muted/30 shadow-sm">
+          <div className="rounded-xl border bg-muted/30 shadow-sm">
             <Textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}

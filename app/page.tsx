@@ -15,7 +15,6 @@ import {
   Sparkles,
   Zap,
   Cpu,
-  Wrench,
   FileText,
   Presentation,
   ImageIcon,
@@ -64,10 +63,7 @@ export default async function Home() {
     <div className="min-h-screen bg-background">
       <MarketingHeader />
       <Hero />
-      <Models />
-      <UnifiedChat />
-      <Skills />
-      <Create />
+      <BentoFeatures />
       <Connect />
       <Pricing />
       <FAQ />
@@ -81,54 +77,50 @@ function Hero() {
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0 grid-bg" />
-      <div className="relative mx-auto max-w-7xl px-6 pb-24 pt-20 sm:pt-28">
-        <div className="grid items-center gap-16 lg:grid-cols-[1.05fr_0.95fr]">
-          <div>
-            <Reveal>
-              <div className="mb-6 flex items-center gap-2.5">
-                <Sparkles className="size-3.5 text-primary" />
-                <span className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  Now with Reklu Auto
-                </span>
-              </div>
-            </Reveal>
-            <Reveal delay={0.08}>
-              <h1 className="text-balance font-display text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
-                Every model.
-                <br />
-                Answering as one.
-              </h1>
-              <SpectrumRule className="mt-6 w-16" />
-            </Reveal>
-            <Reveal delay={0.16}>
-              <p className="mt-6 max-w-lg text-balance text-lg text-muted-foreground">
-                Stop juggling tabs for GPT, Claude, and Gemini. Reklu routes every question to the
-                right model — or lets you choose — with one connected workspace for chat, files,
-                skills, and the tools you already use.
-              </p>
-            </Reveal>
-            <Reveal delay={0.24}>
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                <Button asChild size="xl">
-                  <Link href="/sign-up">
-                    Start using Reklu <ArrowRight />
-                  </Link>
-                </Button>
-                <Button asChild size="xl" variant="outline">
-                  <Link href="/features">See how it works</Link>
-                </Button>
-              </div>
-              <p className="mt-5 text-sm text-muted-foreground">
-                No credit card. Free tier available. BYOK supported.
-              </p>
-            </Reveal>
+      <div className="relative mx-auto max-w-[100rem] px-6 pb-8 pt-16 sm:pt-24">
+        <Reveal>
+          <div className="mb-8 flex items-center gap-2.5">
+            <Sparkles className="size-3.5 text-primary" />
+            <span className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+              Now with Reklu Auto
+            </span>
           </div>
-
-          <Reveal delay={0.2} className="lg:justify-self-end">
-            <DemoCard />
-          </Reveal>
-        </div>
+        </Reveal>
+        <Reveal delay={0.08}>
+          <h1 className="max-w-5xl text-balance font-display text-[clamp(2.75rem,8vw,6.5rem)] font-semibold leading-[0.95] tracking-tight">
+            Every model.
+            <br />
+            Answering as one.
+          </h1>
+          <SpectrumRule className="mt-8 w-20" />
+        </Reveal>
+        <Reveal delay={0.16}>
+          <p className="mt-8 max-w-lg text-balance text-lg text-muted-foreground">
+            Stop juggling tabs for GPT, Claude, and Gemini. Reklu routes every question to the
+            right model — or lets you choose — with one connected workspace for chat, files,
+            skills, and the tools you already use.
+          </p>
+        </Reveal>
+        <Reveal delay={0.24}>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <Button asChild size="xl">
+              <Link href="/sign-up">
+                Start using Reklu <ArrowRight />
+              </Link>
+            </Button>
+            <Button asChild size="xl" variant="outline">
+              <Link href="/features">See how it works</Link>
+            </Button>
+          </div>
+          <p className="mt-5 text-sm text-muted-foreground">
+            No credit card. Free tier available. BYOK supported.
+          </p>
+        </Reveal>
       </div>
+      {/* Asymmetric: the demo panel breaks out of the text column instead of sitting in a clean 2-col split */}
+      <Reveal delay={0.2} className="relative z-10 mt-10 px-6 pb-20 lg:mt-[-7rem] lg:flex lg:justify-end lg:px-16 lg:pb-28">
+        <DemoCard />
+      </Reveal>
     </section>
   );
 }
@@ -192,68 +184,31 @@ function DemoCard() {
   );
 }
 
-function Models() {
+/** Consolidates what was four near-identical stacked sections (Models, Unified
+ * Chat, Skills, Create) into one denser bento grid — fewer, richer sections
+ * instead of five alternating full-width bands. */
+function BentoFeatures() {
   return (
     <section className="border-t py-24">
       <div className="mx-auto max-w-7xl px-6">
-        <ScrollReveal className="max-w-2xl">
-          <SectionEyebrow icon={Globe} label="Trusted model providers" />
+        <ScrollReveal className="mb-10 max-w-2xl">
+          <SectionEyebrow icon={Sparkles} label="One workspace" />
           <h2 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-            All the leading models, in one place
+            Chat, models, skills, and output — together
           </h2>
-          <p className="mt-3 text-muted-foreground">
-            We connect directly to each provider — no middleman, no markup on top of list price.
-          </p>
         </ScrollReveal>
-        <ScrollReveal delay={0.1} className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          {MODELS.map((m, i) => (
-            <Card key={`${m.name}-${i}`} className="bg-background">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <ProviderDot providerId={m.id} />
-                  {m.provider}
-                </div>
-                <div className="mt-1.5 text-sm font-medium">{m.name}</div>
-              </CardContent>
-            </Card>
-          ))}
-        </ScrollReveal>
-      </div>
-    </section>
-  );
-}
 
-function UnifiedChat() {
-  return (
-    <section className="border-t py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          <ScrollReveal>
+        <div className="grid gap-3 lg:grid-cols-3 lg:[grid-template-areas:'chat_chat_models'_'chat_chat_skills']">
+          <ScrollReveal className="rounded-lg border bg-card p-6 shadow-sm lg:[grid-area:chat]">
             <SectionEyebrow icon={MessageSquare} label="Unified chat" />
-            <h2 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+            <h3 className="font-display text-xl font-semibold tracking-tight">
               One chat. Every model. Switch mid-conversation.
-            </h2>
-            <p className="mt-4 text-muted-foreground">
-              Start a chat with any model. Switch to a different one when the task changes. Let
-              Reklu Auto pick the best one for you. Compare two or four models side by side.
+            </h3>
+            <p className="mt-3 text-sm text-muted-foreground">
+              Let Reklu Auto pick the best model, or switch manually. Compare 2-4 models side by
+              side with transparent cost and latency.
             </p>
-            <ul className="mt-6 space-y-2.5 text-sm">
-              {[
-                "Reklu Auto picks the right model and explains why",
-                "Compare 2-4 models in synchronized columns",
-                "See transparent cost, latency, and token usage",
-                "Attach files, mention @model, @skill, @connector",
-                "Persistent conversations with branching and search",
-              ].map((b) => (
-                <li key={b} className="flex items-start gap-2">
-                  <Check className="mt-0.5 size-4 shrink-0 text-primary" />
-                  <span>{b}</span>
-                </li>
-              ))}
-            </ul>
-          </ScrollReveal>
-          <ScrollReveal delay={0.1} className="rounded-lg border bg-card p-6 shadow-sm">
-            <div className="space-y-3 text-sm">
+            <div className="mt-6 space-y-3 text-sm">
               <div className="rounded-md bg-muted/50 p-3">
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <ProviderDot providerId="openai" /> GPT-4o
@@ -265,77 +220,83 @@ function UnifiedChat() {
                   <ProviderDot providerId="anthropic" /> Switched to Claude Sonnet 4.5
                 </div>
                 <div className="mt-1">
-                  I can do that, plus a type-safe parser. Want me to add error handling for
-                  malformed rows?
+                  I can do that, plus a type-safe parser. Want error handling for malformed rows?
                 </div>
               </div>
-              <div className="rounded-md bg-muted/50 p-3">
-                <div className="text-xs text-muted-foreground">You</div>
-                <div className="mt-1">Yes, and add tests please.</div>
-              </div>
+            </div>
+            <ul className="mt-6 space-y-2 text-xs text-muted-foreground">
+              {[
+                "Reklu Auto explains why it picked a model",
+                "Transparent cost, latency, and token usage",
+                "Persistent conversations with branching and search",
+              ].map((b) => (
+                <li key={b} className="flex items-start gap-2">
+                  <Check className="mt-0.5 size-3.5 shrink-0 text-primary" />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.06} className="rounded-lg border bg-card p-6 shadow-sm lg:[grid-area:models]">
+            <SectionEyebrow icon={Globe} label="Providers" />
+            <h3 className="font-display text-lg font-semibold tracking-tight">
+              All the leading models
+            </h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Direct APIs, no markup on list price.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-1.5">
+              {MODELS.slice(0, 8).map((m, i) => (
+                <span
+                  key={`${m.name}-${i}`}
+                  className="inline-flex items-center gap-1.5 rounded-md border bg-background px-2 py-1 text-xs"
+                >
+                  <ProviderDot providerId={m.id} />
+                  {m.name}
+                </span>
+              ))}
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.12} className="rounded-lg border bg-card p-6 shadow-sm lg:[grid-area:skills]">
+            <SectionEyebrow icon={Zap} label="Skills" />
+            <h3 className="font-display text-lg font-semibold tracking-tight">
+              Complete AI workflows
+            </h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Instructions, model policy, tools, and quality checks — not a prompt library.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-1.5">
+              {SKILLS.slice(0, 4).map((s) => (
+                <span key={s.name} className="rounded-md border bg-background px-2 py-1 text-xs">
+                  {s.name}
+                </span>
+              ))}
             </div>
           </ScrollReveal>
         </div>
-      </div>
-    </section>
-  );
-}
 
-function Skills() {
-  return (
-    <section className="border-t py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <ScrollReveal className="max-w-2xl">
-          <SectionEyebrow icon={Zap} label="Skills" />
-          <h2 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-            More than prompts. Complete AI workflows.
-          </h2>
-          <p className="mt-3 text-muted-foreground">
-            Each Reklu skill combines instructions, model policy, tools, output format, and
-            quality checks. Not a prompt library — a workflow engine.
-          </p>
-        </ScrollReveal>
-        <ScrollReveal delay={0.1} className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {SKILLS.map((s) => (
-            <Card key={s.name}>
-              <CardContent className="p-5">
-                <div className="flex items-center gap-2">
-                  <Wrench className="size-4 text-muted-foreground" />
-                  <h3 className="font-medium">{s.name}</h3>
-                </div>
-                <p className="mt-1.5 text-sm text-muted-foreground">{s.desc}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </ScrollReveal>
-      </div>
-    </section>
-  );
-}
-
-function Create() {
-  return (
-    <section className="border-t py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <ScrollReveal className="max-w-2xl">
-          <SectionEyebrow icon={Sparkles} label="Create" />
-          <h2 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-            Create real artifacts, not just text
-          </h2>
-          <p className="mt-3 text-muted-foreground">
-            Generate, edit, and export. From chat or from a dedicated creation page.
-          </p>
-        </ScrollReveal>
-        <ScrollReveal delay={0.1} className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-          {CREATORS.map(({ icon: Icon, name, desc }) => (
-            <Card key={name}>
-              <CardContent className="p-5">
-                <Icon className="size-5 text-primary" />
-                <h3 className="mt-3 font-medium">{name}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{desc}</p>
-              </CardContent>
-            </Card>
-          ))}
+        <ScrollReveal delay={0.1} className="mt-3 rounded-lg border bg-card p-6 shadow-sm">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <SectionEyebrow icon={FileText} label="Create" />
+              <h3 className="font-display text-lg font-semibold tracking-tight">
+                Real artifacts, not just text
+              </h3>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {CREATORS.map(({ icon: Icon, name }) => (
+                <span
+                  key={name}
+                  className="inline-flex items-center gap-1.5 rounded-md border bg-background px-2.5 py-1.5 text-xs font-medium"
+                >
+                  <Icon className="size-3.5 text-primary" />
+                  {name}
+                </span>
+              ))}
+            </div>
+          </div>
         </ScrollReveal>
       </div>
     </section>

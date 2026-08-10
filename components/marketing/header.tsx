@@ -9,17 +9,17 @@ const NAV = [
   { href: "/pricing", label: "Pricing" },
 ];
 
-/** Shared header for every marketing page — was previously copy-pasted per page. */
+/** Floating pill nav, inset from the viewport edge — replaces the v1 full-width sticky bar. */
 export function MarketingHeader({ nav = true }: { nav?: boolean }) {
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/85 backdrop-blur-xl">
-      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-6">
+    <div className="sticky top-3 z-40 mx-auto w-full max-w-3xl px-4">
+      <header className="flex h-12 items-center justify-between rounded-full border bg-card/90 pl-3 pr-1.5 shadow-lg backdrop-blur-xl">
         <Link href="/" className="flex items-center gap-2">
           <Logo />
-          <span className="font-display text-[15px] font-semibold tracking-tight">Reklu</span>
+          <span className="font-mono text-[13px] font-semibold tracking-tight">Reklu</span>
         </Link>
         {nav && (
-          <nav className="hidden gap-7 md:flex">
+          <nav className="hidden gap-6 md:flex">
             {NAV.map((item) => (
               <Link
                 key={item.href}
@@ -31,17 +31,17 @@ export function MarketingHeader({ nav = true }: { nav?: boolean }) {
             ))}
           </nav>
         )}
-        <div className="flex items-center gap-2">
-          <Button asChild variant="ghost" size="sm" className="hidden sm:flex">
+        <div className="flex items-center gap-1">
+          <Button asChild variant="ghost" size="sm" className="hidden rounded-full sm:flex">
             <Link href="/sign-in">Sign in</Link>
           </Button>
-          <Button asChild size="sm">
+          <Button asChild size="sm" className="rounded-full">
             <Link href="/sign-up">
               Get started <ArrowRight className="size-3" />
             </Link>
           </Button>
         </div>
-      </div>
-    </header>
+      </header>
+    </div>
   );
 }

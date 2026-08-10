@@ -78,8 +78,11 @@ const config: Config = {
         xs: "calc(var(--radius) - 6px)",
       },
       fontFamily: {
+        // v2 uses one technical family (IBM Plex Sans) for both display and
+        // body — `font-display` is kept as an alias (same family, existing
+        // call sites differentiate with weight/tracking, not a separate face).
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
-        display: ["var(--font-display)", "var(--font-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
       keyframes: {
