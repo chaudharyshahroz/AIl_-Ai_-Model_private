@@ -58,9 +58,9 @@ export default async function ConnectorsPage() {
 
   return (
     <div className="h-full overflow-y-auto">
-      <div className="mx-auto max-w-5xl space-y-6 p-6">
+      <div className="mx-auto max-w-5xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Connectors</h1>
+          <h1 className="display-lg text-2xl">Connectors</h1>
           <p className="text-sm text-muted-foreground">
             Connect your apps to Reklu. Once connected, you can mention files and data from your
             tools directly in chat.

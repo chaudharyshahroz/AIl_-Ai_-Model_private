@@ -540,10 +540,73 @@ html.panel-collapsed .context-panel {
   border-width: 0;
 }
 
+/* Below md the rail + panel would consume the whole viewport, so they slide in
+   as an off-canvas drawer and the content column takes the full width. The
+   scrim is only rendered/hit-testable while the drawer is open. */
+.mobile-scrim {
+  display: none;
+}
+@media (max-width: 767px) {
+  .nav-rail,
+  .context-panel {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: 50;
+    transition: transform 0.2s ease;
+  }
+  .nav-rail {
+    left: 0;
+    transform: translateX(-100%);
+  }
+  .context-panel {
+    left: 4rem; /* sits beside the rail */
+    width: 260px;
+    transform: translateX(-120%);
+  }
+  /* The desktop collapse state must not hide the drawer's panel on mobile. */
+  html.panel-collapsed .context-panel {
+    width: 260px;
+    border-right-width: 1px;
+  }
+  html.mobile-nav-open .nav-rail,
+  html.mobile-nav-open .context-panel {
+    transform: none;
+  }
+  html.mobile-nav-open .mobile-scrim {
+    display: block;
+  }
+}
+
 /* Admin sidebar — same class-toggle mechanism, icon+label <-> icon-only. */
 .admin-sidebar {
   width: 220px;
   transition: width 0.15s ease;
+}
+@media (max-width: 767px) {
+  .admin-sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 50;
+    width: 240px;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+  }
+  /* Never show the icon-only desktop collapse inside the mobile drawer. */
+  html.admin-sidebar-collapsed .admin-sidebar {
+    width: 240px;
+  }
+  html.admin-sidebar-collapsed .admin-sidebar .nav-label {
+    display: revert;
+  }
+  html.admin-sidebar-collapsed .admin-sidebar .collapsed-only {
+    display: none;
+  }
+  html.mobile-nav-open .admin-sidebar {
+    transform: none;
+  }
 }
 html.admin-sidebar-collapsed .admin-sidebar {
   width: 64px;

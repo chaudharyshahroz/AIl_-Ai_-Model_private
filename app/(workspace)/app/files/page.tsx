@@ -66,9 +66,9 @@ export default async function FilesPage() {
 
   return (
     <div className="h-full overflow-y-auto">
-      <div className="mx-auto max-w-4xl space-y-6 p-6">
+      <div className="mx-auto max-w-4xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Files</h1>
+          <h1 className="display-lg text-2xl">Files</h1>
           <p className="text-sm text-muted-foreground">
             Upload PDFs, docs, code, and text. Reklu extracts the content, embeds it, and
             surfaces it in chat with citations.

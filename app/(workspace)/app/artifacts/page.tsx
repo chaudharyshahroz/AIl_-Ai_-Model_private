@@ -51,9 +51,9 @@ export default async function ArtifactsPage() {
 
   return (
     <div className="h-full overflow-y-auto">
-      <div className="mx-auto max-w-5xl space-y-6 p-6">
+      <div className="mx-auto max-w-5xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Artifacts</h1>
+          <h1 className="display-lg text-2xl">Artifacts</h1>
           <p className="text-sm text-muted-foreground">
             Create, edit, and export documents, code, and more. Each artifact has version
             history.

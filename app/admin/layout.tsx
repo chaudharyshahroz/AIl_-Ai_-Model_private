@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/admin/auth";
 import { AdminSidebar } from "@/components/admin/sidebar";
+import { MobileNavButton, MobileNavScrim } from "@/components/app/mobile-nav";
 import { ShieldCheck } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -9,10 +10,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const user = await requireAdmin();
   return (
     <div className="flex h-screen bg-background">
+      <MobileNavScrim />
       <AdminSidebar adminName={user.name ?? user.email ?? "Admin"} adminEmail={user.email} />
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
-        <div className="flex h-14 items-center gap-3 border-b bg-admin/5 px-6">
-          <ShieldCheck className="size-4 text-admin" />
+        <div className="flex h-14 shrink-0 items-center gap-3 border-b bg-admin/5 px-4 sm:px-6">
+          <MobileNavButton />
+          <ShieldCheck className="size-4 shrink-0 text-admin" />
           <span className="text-sm font-medium text-admin">
             Admin mode
           </span>

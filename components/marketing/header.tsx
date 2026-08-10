@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/marketing/logo";
+import { MobileMenu } from "@/components/marketing/mobile-menu";
 import { ArrowUpRight } from "lucide-react";
 
 const NAV = [
@@ -37,11 +38,12 @@ export function MarketingHeader({ nav = true }: { nav?: boolean }) {
           <Button asChild variant="ghost" size="sm" className="hidden rounded-lg sm:flex">
             <Link href="/sign-in">Sign in</Link>
           </Button>
-          <Button asChild variant="ink" className="rounded-xl">
+          <Button asChild variant="ink" className="hidden rounded-xl sm:inline-flex">
             <Link href="/sign-up">
               Start free <ArrowUpRight className="size-3.5" />
             </Link>
           </Button>
+          <MobileMenu />
         </div>
       </header>
     </div>

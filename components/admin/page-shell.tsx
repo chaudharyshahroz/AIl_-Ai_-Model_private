@@ -20,7 +20,7 @@ export function AdminPageShell({
   return (
     <div
       className={cn(
-        "mx-auto space-y-6 p-6",
+        "mx-auto space-y-6 px-4 py-6 sm:px-6 sm:py-8",
         maxWidth === "4xl" && "max-w-4xl",
         maxWidth === "5xl" && "max-w-5xl",
         maxWidth === "6xl" && "max-w-6xl",

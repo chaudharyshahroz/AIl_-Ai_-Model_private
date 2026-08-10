@@ -1,5 +1,6 @@
 import { NavRail } from "@/components/app/nav-rail";
 import { ContextPanel } from "@/components/app/context-panel";
+import { MobileNavScrim } from "@/components/app/mobile-nav";
 
 interface ConversationListItem {
   id: string;
@@ -16,6 +17,10 @@ interface ConversationListItem {
  * <html> (see NavRail's togglePanel + the pre-paint script in app/layout.tsx)
  * rather than React state, so there's no server/client markup to hydrate
  * around and no flash on load.
+ *
+ * Below `md` both rails would consume the entire viewport, so they become an
+ * off-canvas drawer instead and the content column takes the full width. See
+ * the `.nav-rail` / `.context-panel` mobile rules in globals.css.
  */
 export function AppShell({
   user,
@@ -32,6 +37,7 @@ export function AppShell({
 }) {
   return (
     <div className="flex h-screen bg-background">
+      <MobileNavScrim />
       <NavRail user={user} organization={organization} signOutAction={signOutAction} />
       <div className="context-panel h-full shrink-0 border-r">
         <ContextPanel conversations={conversations} />

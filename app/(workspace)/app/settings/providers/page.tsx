@@ -22,9 +22,9 @@ export default async function ProvidersPage() {
 
   return (
     <div className="h-full overflow-y-auto">
-      <div className="mx-auto max-w-2xl space-y-6 p-6">
+      <div className="mx-auto max-w-2xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Providers</h1>
+          <h1 className="display-lg text-2xl">Providers</h1>
           <p className="text-sm text-muted-foreground">
             AI provider keys are managed by the admin team, not by individual users. This keeps
             billing and rate limits under one roof.

@@ -111,9 +111,9 @@ export default async function MCPPage() {
 
   return (
     <div className="h-full overflow-y-auto">
-      <div className="mx-auto max-w-4xl space-y-6 p-6">
+      <div className="mx-auto max-w-4xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">MCP servers</h1>
+          <h1 className="display-lg text-2xl">MCP servers</h1>
           <p className="text-sm text-muted-foreground">
             Connect Model Context Protocol servers to give Reklu access to your tools. Every tool
             call is approved by you.

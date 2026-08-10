@@ -104,7 +104,7 @@ export function NavRail({
   const pathname = usePathname();
 
   return (
-    <aside className="flex h-full w-16 shrink-0 flex-col items-center border-r bg-background">
+    <aside className="nav-rail flex h-full w-16 shrink-0 flex-col items-center border-r bg-background">
       <div className="flex h-14 w-full items-center justify-center border-b">
         <Link href="/" className="grid size-8 place-items-center rounded-lg bg-foreground text-background">
           <span className="font-mono text-xs font-bold">R</span>
